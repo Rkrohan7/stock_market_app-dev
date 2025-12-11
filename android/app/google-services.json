@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "267352424034",
+    "project_id": "stockmarket-73b29",
+    "storage_bucket": "stockmarket-73b29.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:267352424034:android:8ea6d8b91a1620cd99db3b",
+        "android_client_info": {
+          "package_name": "com.mgs.stockmarket"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "267352424034-eu3jsgt730pcim25beded9s4inb2lem3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mgs.stockmarket",
+            "certificate_hash": "43f03d2b7784a731c893c1ead88f88843f905ca2"
+          }
+        },
+        {
+          "client_id": "267352424034-30k990fjfphdcnghgt4aqkldpcat4p4r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1fA9sifXmSj8VDcXneTPNbY7m8xvhwn8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "267352424034-30k990fjfphdcnghgt4aqkldpcat4p4r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
