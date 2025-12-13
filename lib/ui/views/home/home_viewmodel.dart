@@ -12,6 +12,7 @@ class HomeViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final _authService = locator<AuthService>();
   final _stockService = locator<StockService>();
+  // ignore: unused_field
   final _portfolioService = locator<PortfolioService>();
 
   int _currentIndex = 0;
@@ -141,6 +142,10 @@ class HomeViewModel extends BaseViewModel {
 
   void openAnalysis() {
     _navigationService.navigateTo(Routes.aiSuggestionsView);
+  }
+
+  void openFunds() {
+    _navigationService.navigateTo(Routes.fundView);
   }
 
   void openStockDetails(String symbol) {

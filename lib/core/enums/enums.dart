@@ -219,3 +219,68 @@ extension RiskLevelExtension on RiskLevel {
     }
   }
 }
+
+// Fund Transaction Type
+enum FundTransactionType { deposit, withdrawal }
+
+extension FundTransactionTypeExtension on FundTransactionType {
+  String get displayName {
+    switch (this) {
+      case FundTransactionType.deposit:
+        return 'Deposit';
+      case FundTransactionType.withdrawal:
+        return 'Withdrawal';
+    }
+  }
+}
+
+// Payment Method
+enum PaymentMethod { upi, netBanking, card, wallet }
+
+extension PaymentMethodExtension on PaymentMethod {
+  String get displayName {
+    switch (this) {
+      case PaymentMethod.upi:
+        return 'UPI';
+      case PaymentMethod.netBanking:
+        return 'Net Banking';
+      case PaymentMethod.card:
+        return 'Debit/Credit Card';
+      case PaymentMethod.wallet:
+        return 'Wallet';
+    }
+  }
+
+  String get icon {
+    switch (this) {
+      case PaymentMethod.upi:
+        return 'upi';
+      case PaymentMethod.netBanking:
+        return 'bank';
+      case PaymentMethod.card:
+        return 'card';
+      case PaymentMethod.wallet:
+        return 'wallet';
+    }
+  }
+}
+
+// Fund Transaction Status
+enum FundTransactionStatus { pending, processing, completed, failed, cancelled }
+
+extension FundTransactionStatusExtension on FundTransactionStatus {
+  String get displayName {
+    switch (this) {
+      case FundTransactionStatus.pending:
+        return 'Pending';
+      case FundTransactionStatus.processing:
+        return 'Processing';
+      case FundTransactionStatus.completed:
+        return 'Completed';
+      case FundTransactionStatus.failed:
+        return 'Failed';
+      case FundTransactionStatus.cancelled:
+        return 'Cancelled';
+    }
+  }
+}

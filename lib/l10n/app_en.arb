@@ -1,0 +1,97 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "Stock Market",
+
+  "home": "Home",
+  "market": "Market",
+  "portfolio": "Portfolio",
+  "watchlist": "Watchlist",
+  "profile": "Profile",
+
+  "settings": "Settings",
+  "appearance": "Appearance",
+  "darkMode": "Dark Mode",
+  "notifications": "Notifications",
+  "pushNotifications": "Push Notifications",
+  "priceAlerts": "Price Alerts",
+  "newsAlerts": "News Alerts",
+  "active": "{count} active",
+  "@active": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "general": "General",
+  "language": "Language",
+  "english": "English",
+  "marathi": "Marathi",
+  "currency": "Currency",
+  "inrCurrency": "INR (₹)",
+  "legal": "Legal",
+  "privacyPolicy": "Privacy Policy",
+  "termsOfService": "Terms of Service",
+  "about": "About",
+  "appVersion": "App Version",
+
+  "goodMorning": "Good Morning",
+  "goodAfternoon": "Good Afternoon",
+  "goodEvening": "Good Evening",
+
+  "portfolioValue": "Portfolio Value",
+  "todayPnL": "Today's P&L",
+  "totalPnL": "Total P&L",
+
+  "topGainers": "Top Gainers",
+  "topLosers": "Top Losers",
+  "mostActive": "Most Active",
+  "viewAll": "View All",
+
+  "buy": "Buy",
+  "sell": "Sell",
+  "funds": "Funds",
+  "learn": "Learn",
+  "aiTips": "AI Tips",
+  "news": "News",
+  "orders": "Orders",
+  "kyc": "KYC",
+
+  "marketOpen": "Market Open",
+  "marketClosed": "Market Closed",
+
+  "search": "Search",
+  "searchStocks": "Search Stocks",
+
+  "logout": "Logout",
+  "logoutConfirmation": "Are you sure you want to logout?",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+
+  "helpSupport": "Help & Support",
+
+  "kycPending": "KYC Pending",
+  "kycVerified": "KYC Verified",
+  "kycRejected": "KYC Rejected",
+
+  "addFunds": "Add Funds",
+  "withdrawFunds": "Withdraw Funds",
+  "availableBalance": "Available Balance",
+
+  "orderHistory": "Order History",
+  "noOrders": "No orders yet",
+
+  "education": "Education",
+  "beginner": "Beginner",
+  "intermediate": "Intermediate",
+  "advanced": "Advanced",
+
+  "loading": "Loading...",
+  "error": "Error",
+  "retry": "Retry",
+  "noData": "No data available",
+
+  "selectLanguage": "Select Language",
+  "languageChanged": "Language changed successfully"
+}

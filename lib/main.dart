@@ -4,12 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'l10n/app_localizations.dart';
 
 import 'app/app.locator.dart';
 import 'app/app.router.dart';
 import 'core/theme/app_theme.dart';
 import 'firebase/firebase_admin.dart';
 import 'services/theme_service.dart';
+import 'services/notification_service.dart';
+import 'services/alert_service.dart';
+import 'services/localization_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,6 +45,18 @@ Future<void> main() async {
   final themeService = locator<ThemeService>();
   await themeService.initialize();
 
+  // Initialize notification service
+  final notificationService = locator<NotificationService>();
+  await notificationService.initialize();
+
+  // Initialize alert service (this will load saved alerts and start monitoring)
+  final alertService = locator<AlertService>();
+  await alertService.initialize();
+
+  // Initialize localization service
+  final localizationService = locator<LocalizationService>();
+  await localizationService.initialize();
+
   // Set preferred orientations
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -67,22 +84,28 @@ class StockMarketApp extends StatefulWidget {
 
 class _StockMarketAppState extends State<StockMarketApp> {
   final _themeService = locator<ThemeService>();
+  final _localizationService = locator<LocalizationService>();
 
   @override
   void initState() {
     super.initState();
     // Listen to theme changes
-    _themeService.addListener(_onThemeChanged);
+    _themeService.addListener(_onSettingsChanged);
+    // Listen to language changes
+    _localizationService.addListener(_onSettingsChanged);
   }
 
   @override
   void dispose() {
-    _themeService.removeListener(_onThemeChanged);
+    _themeService.removeListener(_onSettingsChanged);
+    _localizationService.removeListener(_onSettingsChanged);
+    // Dispose alert service timers
+    locator<AlertService>().dispose();
     super.dispose();
   }
 
-  void _onThemeChanged() {
-    // Rebuild the app when theme changes
+  void _onSettingsChanged() {
+    // Rebuild the app when theme or language changes
     setState(() {});
   }
 
@@ -94,8 +117,17 @@ class _StockMarketAppState extends State<StockMarketApp> {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: _themeService.currentTheme,
+      // Localization
+      locale: _localizationService.currentLocale,
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       navigatorKey: StackedService.navigatorKey,
-      onGenerateRoute: generateRoute,
+      onGenerateRoute: StackedRouter().onGenerateRoute,
       initialRoute: Routes.startupView,
     );
   }

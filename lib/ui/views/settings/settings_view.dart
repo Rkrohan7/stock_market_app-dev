@@ -1,134 +1,186 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import 'settings_viewmodel.dart';
 
 class SettingsView extends StackedView<SettingsViewModel> {
   const SettingsView({super.key});
 
   @override
-  Widget builder(BuildContext context, SettingsViewModel viewModel, Widget? child) {
+  Widget builder(
+    BuildContext context,
+    SettingsViewModel viewModel,
+    Widget? child,
+  ) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text(AppLocalizations.of(context)!.settings),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: viewModel.goBack,
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildSectionHeader(context, 'Appearance'),
-            _buildSettingsTile(
-              context,
-              'Dark Mode',
-              Icons.dark_mode_outlined,
-              trailing: Switch(
-                value: viewModel.isDarkMode,
-                onChanged: (_) => viewModel.toggleTheme(),
-                activeTrackColor: AppColors.primary.withValues(alpha: 0.5),
-                activeThumbColor: AppColors.primary,
+      body: viewModel.isBusy
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildSectionHeader(
+                    context,
+                    AppLocalizations.of(context)!.appearance,
+                  ),
+                  _buildSettingsTile(
+                    context,
+                    AppLocalizations.of(context)!.darkMode,
+                    Icons.dark_mode_outlined,
+                    trailing: Switch(
+                      value: viewModel.isDarkMode,
+                      onChanged: (_) => viewModel.toggleTheme(),
+                      activeTrackColor: AppColors.primary.withValues(
+                        alpha: 0.5,
+                      ),
+                      thumbColor: WidgetStateProperty.resolveWith((states) {
+                        if (states.contains(WidgetState.selected)) {
+                          return AppColors.primary;
+                        }
+                        return null;
+                      }),
+                    ),
+                  ),
+                  _buildSectionHeader(
+                    context,
+                    AppLocalizations.of(context)!.notifications,
+                  ),
+                  _buildSettingsTile(
+                    context,
+                    AppLocalizations.of(context)!.pushNotifications,
+                    Icons.notifications_outlined,
+                    trailing: Switch(
+                      value: viewModel.pushNotifications,
+                      onChanged: viewModel.togglePushNotifications,
+                      activeTrackColor: AppColors.primary.withValues(
+                        alpha: 0.5,
+                      ),
+                      thumbColor: WidgetStateProperty.resolveWith((states) {
+                        if (states.contains(WidgetState.selected)) {
+                          return AppColors.primary;
+                        }
+                        return null;
+                      }),
+                    ),
+                  ),
+                  _buildSettingsTile(
+                    context,
+                    AppLocalizations.of(context)!.priceAlerts,
+                    Icons.trending_up_rounded,
+                    subtitle: viewModel.activePriceAlertsCount > 0
+                        ? AppLocalizations.of(
+                            context,
+                          )!.active(viewModel.activePriceAlertsCount)
+                        : null,
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Switch(
+                          value: viewModel.priceAlerts,
+                          onChanged: viewModel.togglePriceAlerts,
+                          activeTrackColor: AppColors.primary.withValues(
+                            alpha: 0.5,
+                          ),
+                          thumbColor: WidgetStateProperty.resolveWith((states) {
+                            if (states.contains(WidgetState.selected)) {
+                              return AppColors.primary;
+                            }
+                            return null;
+                          }),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 16,
+                          color: AppColors.textSecondaryLight,
+                        ),
+                      ],
+                    ),
+                    onTap: viewModel.navigateToPriceAlerts,
+                  ),
+                  _buildSettingsTile(
+                    context,
+                    AppLocalizations.of(context)!.newsAlerts,
+                    Icons.article_outlined,
+                    subtitle: viewModel.activeNewsAlertsCount > 0
+                        ? AppLocalizations.of(
+                            context,
+                          )!.active(viewModel.activeNewsAlertsCount)
+                        : null,
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Switch(
+                          value: viewModel.newsAlerts,
+                          onChanged: viewModel.toggleNewsAlerts,
+                          activeTrackColor: AppColors.primary.withValues(
+                            alpha: 0.5,
+                          ),
+                          thumbColor: WidgetStateProperty.resolveWith((states) {
+                            if (states.contains(WidgetState.selected)) {
+                              return AppColors.primary;
+                            }
+                            return null;
+                          }),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 16,
+                          color: AppColors.textSecondaryLight,
+                        ),
+                      ],
+                    ),
+                    onTap: viewModel.navigateToNewsAlerts,
+                  ),
+                  _buildSectionHeader(
+                    context,
+                    AppLocalizations.of(context)!.general,
+                  ),
+                  _buildSettingsTile(
+                    context,
+                    AppLocalizations.of(context)!.language,
+                    Icons.language_outlined,
+                    subtitle: viewModel.currentLanguageName,
+                    onTap: () => _showLanguageDialog(context, viewModel),
+                  ),
+
+                  _buildSectionHeader(
+                    context,
+                    AppLocalizations.of(context)!.legal,
+                  ),
+                  _buildSettingsTile(
+                    context,
+                    AppLocalizations.of(context)!.privacyPolicy,
+                    Icons.privacy_tip_outlined,
+                    onTap: viewModel.navigateToPrivacyPolicy,
+                  ),
+                  _buildSettingsTile(
+                    context,
+                    AppLocalizations.of(context)!.termsOfService,
+                    Icons.description_outlined,
+                    onTap: viewModel.navigateToTermsOfService,
+                  ),
+                  _buildSectionHeader(
+                    context,
+                    AppLocalizations.of(context)!.about,
+                  ),
+                  _buildSettingsTile(
+                    context,
+                    AppLocalizations.of(context)!.appVersion,
+                    Icons.info_outline,
+                    subtitle: '1.0.0',
+                  ),
+                  const SizedBox(height: 24),
+                ],
               ),
             ),
-            _buildSectionHeader(context, 'Notifications'),
-            _buildSettingsTile(
-              context,
-              'Push Notifications',
-              Icons.notifications_outlined,
-              trailing: Switch(
-                value: viewModel.pushNotifications,
-                onChanged: viewModel.togglePushNotifications,
-                activeTrackColor: AppColors.primary.withValues(alpha: 0.5),
-                activeThumbColor: AppColors.primary,
-              ),
-            ),
-            _buildSettingsTile(
-              context,
-              'Price Alerts',
-              Icons.trending_up_rounded,
-              trailing: Switch(
-                value: viewModel.priceAlerts,
-                onChanged: viewModel.togglePriceAlerts,
-                activeTrackColor: AppColors.primary.withValues(alpha: 0.5),
-                activeThumbColor: AppColors.primary,
-              ),
-            ),
-            _buildSettingsTile(
-              context,
-              'News Alerts',
-              Icons.article_outlined,
-              trailing: Switch(
-                value: viewModel.newsAlerts,
-                onChanged: viewModel.toggleNewsAlerts,
-                activeTrackColor: AppColors.primary.withValues(alpha: 0.5),
-                activeThumbColor: AppColors.primary,
-              ),
-            ),
-            _buildSectionHeader(context, 'Security'),
-            _buildSettingsTile(
-              context,
-              'Biometric Authentication',
-              Icons.fingerprint,
-              trailing: Switch(
-                value: viewModel.biometricAuth,
-                onChanged: viewModel.toggleBiometricAuth,
-                activeTrackColor: AppColors.primary.withValues(alpha: 0.5),
-                activeThumbColor: AppColors.primary,
-              ),
-            ),
-            _buildSettingsTile(
-              context,
-              'Change PIN',
-              Icons.pin_outlined,
-              onTap: () {},
-            ),
-            _buildSettingsTile(
-              context,
-              'Change Password',
-              Icons.lock_outline,
-              onTap: () {},
-            ),
-            _buildSectionHeader(context, 'General'),
-            _buildSettingsTile(
-              context,
-              'Language',
-              Icons.language_outlined,
-              subtitle: 'English',
-              onTap: () {},
-            ),
-            _buildSettingsTile(
-              context,
-              'Currency',
-              Icons.currency_rupee_rounded,
-              subtitle: 'INR (₹)',
-              onTap: () {},
-            ),
-            _buildSectionHeader(context, 'Legal'),
-            _buildSettingsTile(
-              context,
-              'Privacy Policy',
-              Icons.privacy_tip_outlined,
-              onTap: () {},
-            ),
-            _buildSettingsTile(
-              context,
-              'Terms of Service',
-              Icons.description_outlined,
-              onTap: () {},
-            ),
-            _buildSectionHeader(context, 'About'),
-            _buildSettingsTile(
-              context,
-              'App Version',
-              Icons.info_outline,
-              subtitle: '1.0.0',
-            ),
-            const SizedBox(height: 24),
-          ],
-        ),
-      ),
     );
   }
 
@@ -166,16 +218,13 @@ class SettingsView extends StackedView<SettingsViewModel> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: const TextStyle(fontSize: 15),
-                  ),
+                  Text(title, style: const TextStyle(fontSize: 15)),
                   if (subtitle != null)
                     Text(
                       subtitle,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSecondaryLight,
-                          ),
+                        color: AppColors.textSecondaryLight,
+                      ),
                     ),
                 ],
               ),
@@ -192,6 +241,59 @@ class SettingsView extends StackedView<SettingsViewModel> {
     );
   }
 
+  void _showLanguageDialog(BuildContext context, SettingsViewModel viewModel) {
+    final l10n = AppLocalizations.of(context)!;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.selectLanguage),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: Radio<String>(
+                value: 'en',
+                groupValue: viewModel.currentLanguageCode,
+                onChanged: (value) {
+                  viewModel.setLanguage(value!);
+                  Navigator.pop(context);
+                },
+                activeColor: AppColors.primary,
+              ),
+              title: Text(l10n.english),
+              onTap: () {
+                viewModel.setLanguage('en');
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Radio<String>(
+                value: 'mr',
+                groupValue: viewModel.currentLanguageCode,
+                onChanged: (value) {
+                  viewModel.setLanguage(value!);
+                  Navigator.pop(context);
+                },
+                activeColor: AppColors.primary,
+              ),
+              title: Text(l10n.marathi),
+              onTap: () {
+                viewModel.setLanguage('mr');
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
-  SettingsViewModel viewModelBuilder(BuildContext context) => SettingsViewModel();
+  SettingsViewModel viewModelBuilder(BuildContext context) =>
+      SettingsViewModel();
+
+  @override
+  void onViewModelReady(SettingsViewModel viewModel) {
+    viewModel.initialize();
+  }
 }

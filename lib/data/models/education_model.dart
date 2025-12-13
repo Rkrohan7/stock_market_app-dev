@@ -224,6 +224,85 @@ class QuizQuestion {
   String get correctAnswer => options[correctOptionIndex];
 }
 
+// Blog Model for Trading Education
+class BlogModel {
+  final String id;
+  final String title;
+  final String summary;
+  final String content;
+  final String author;
+  final String? authorImage;
+  final String? thumbnailUrl;
+  final String category;
+  final String level; // Beginner, Intermediate, Advanced
+  final int readTimeMinutes;
+  final List<String> tags;
+  final DateTime publishedAt;
+  final int viewCount;
+  final int likeCount;
+  final bool isFeatured;
+
+  BlogModel({
+    required this.id,
+    required this.title,
+    required this.summary,
+    required this.content,
+    required this.author,
+    this.authorImage,
+    this.thumbnailUrl,
+    required this.category,
+    this.level = 'Beginner',
+    required this.readTimeMinutes,
+    this.tags = const [],
+    required this.publishedAt,
+    this.viewCount = 0,
+    this.likeCount = 0,
+    this.isFeatured = false,
+  });
+
+  factory BlogModel.fromJson(Map<String, dynamic> json) {
+    return BlogModel(
+      id: json['id'] as String,
+      title: json['title'] as String,
+      summary: json['summary'] as String,
+      content: json['content'] as String,
+      author: json['author'] as String,
+      authorImage: json['authorImage'] as String?,
+      thumbnailUrl: json['thumbnailUrl'] as String?,
+      category: json['category'] as String,
+      level: json['level'] as String? ?? 'Beginner',
+      readTimeMinutes: (json['readTimeMinutes'] as num).toInt(),
+      tags: (json['tags'] as List?)?.map((e) => e as String).toList() ?? [],
+      publishedAt: (json['publishedAt'] as Timestamp).toDate(),
+      viewCount: (json['viewCount'] as num?)?.toInt() ?? 0,
+      likeCount: (json['likeCount'] as num?)?.toInt() ?? 0,
+      isFeatured: json['isFeatured'] as bool? ?? false,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'summary': summary,
+      'content': content,
+      'author': author,
+      'authorImage': authorImage,
+      'thumbnailUrl': thumbnailUrl,
+      'category': category,
+      'level': level,
+      'readTimeMinutes': readTimeMinutes,
+      'tags': tags,
+      'publishedAt': Timestamp.fromDate(publishedAt),
+      'viewCount': viewCount,
+      'likeCount': likeCount,
+      'isFeatured': isFeatured,
+    };
+  }
+
+  String get formattedReadTime => '$readTimeMinutes min read';
+}
+
 // Daily Tips
 class DailyTipModel {
   final String id;

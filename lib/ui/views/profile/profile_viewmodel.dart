@@ -45,16 +45,20 @@ class ProfileViewModel extends BaseViewModel {
     _navigationService.navigateTo(Routes.orderHistoryView);
   }
 
+  void openFunds() {
+    _navigationService.navigateTo(Routes.fundView);
+  }
+
   void openAlerts() {
     // Navigate to alerts
   }
 
   void openSupport() {
-    // Navigate to support
+    _navigationService.navigateTo(Routes.helpSupportView);
   }
 
   void openAbout() {
-    // Show about dialog
+    _navigationService.navigateTo(Routes.aboutView);
   }
 
   Future<void> logout() async {

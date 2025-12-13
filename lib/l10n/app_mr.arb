@@ -1,0 +1,97 @@
+{
+  "@@locale": "mr",
+
+  "appTitle": "शेअर बाजार",
+
+  "home": "मुख्यपृष्ठ",
+  "market": "बाजार",
+  "portfolio": "पोर्टफोलिओ",
+  "watchlist": "वॉचलिस्ट",
+  "profile": "प्रोफाइल",
+
+  "settings": "सेटिंग्ज",
+  "appearance": "दिसणे",
+  "darkMode": "डार्क मोड",
+  "notifications": "सूचना",
+  "pushNotifications": "पुश सूचना",
+  "priceAlerts": "किंमत अलर्ट",
+  "newsAlerts": "बातम्या अलर्ट",
+  "active": "{count} सक्रिय",
+  "@active": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "general": "सामान्य",
+  "language": "भाषा",
+  "english": "इंग्रजी",
+  "marathi": "मराठी",
+  "currency": "चलन",
+  "inrCurrency": "INR (₹)",
+  "legal": "कायदेशीर",
+  "privacyPolicy": "गोपनीयता धोरण",
+  "termsOfService": "सेवा अटी",
+  "about": "बद्दल",
+  "appVersion": "अॅप आवृत्ती",
+
+  "goodMorning": "शुभ प्रभात",
+  "goodAfternoon": "शुभ दुपार",
+  "goodEvening": "शुभ संध्याकाळ",
+
+  "portfolioValue": "पोर्टफोलिओ मूल्य",
+  "todayPnL": "आजचा नफा/तोटा",
+  "totalPnL": "एकूण नफा/तोटा",
+
+  "topGainers": "टॉप गेनर्स",
+  "topLosers": "टॉप लूझर्स",
+  "mostActive": "सर्वाधिक सक्रिय",
+  "viewAll": "सर्व पहा",
+
+  "buy": "खरेदी",
+  "sell": "विक्री",
+  "funds": "निधी",
+  "learn": "शिका",
+  "aiTips": "AI टिप्स",
+  "news": "बातम्या",
+  "orders": "ऑर्डर्स",
+  "kyc": "केवायसी",
+
+  "marketOpen": "बाजार उघडा",
+  "marketClosed": "बाजार बंद",
+
+  "search": "शोधा",
+  "searchStocks": "शेअर्स शोधा",
+
+  "logout": "लॉगआउट",
+  "logoutConfirmation": "तुम्हाला खात्री आहे की तुम्ही लॉगआउट करू इच्छिता?",
+  "cancel": "रद्द करा",
+  "confirm": "पुष्टी करा",
+
+  "helpSupport": "मदत आणि समर्थन",
+
+  "kycPending": "केवायसी प्रलंबित",
+  "kycVerified": "केवायसी सत्यापित",
+  "kycRejected": "केवायसी नाकारले",
+
+  "addFunds": "निधी जोडा",
+  "withdrawFunds": "निधी काढा",
+  "availableBalance": "उपलब्ध शिल्लक",
+
+  "orderHistory": "ऑर्डर इतिहास",
+  "noOrders": "अद्याप कोणत्याही ऑर्डर नाहीत",
+
+  "education": "शिक्षण",
+  "beginner": "नवशिके",
+  "intermediate": "मध्यम",
+  "advanced": "प्रगत",
+
+  "loading": "लोड होत आहे...",
+  "error": "त्रुटी",
+  "retry": "पुन्हा प्रयत्न करा",
+  "noData": "डेटा उपलब्ध नाही",
+
+  "selectLanguage": "भाषा निवडा",
+  "languageChanged": "भाषा यशस्वीरित्या बदलली"
+}
