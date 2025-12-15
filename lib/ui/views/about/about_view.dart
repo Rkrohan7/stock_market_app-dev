@@ -28,10 +28,6 @@ class AboutView extends StackedView<AboutViewModel> {
             _buildAppInfo(context),
             const SizedBox(height: 24),
             _buildFeaturesList(context),
-            const SizedBox(height: 24),
-            _buildLegalSection(context, viewModel),
-            const SizedBox(height: 24),
-            _buildSocialSection(context, viewModel),
             const SizedBox(height: 32),
             _buildFooter(context),
           ],
@@ -95,10 +91,26 @@ class AboutView extends StackedView<AboutViewModel> {
 
   Widget _buildFeaturesList(BuildContext context) {
     final features = [
-      {'icon': Icons.speed, 'title': 'Real-time Data', 'desc': 'Live stock prices and market updates'},
-      {'icon': Icons.pie_chart, 'title': 'Portfolio Tracking', 'desc': 'Monitor your investments easily'},
-      {'icon': Icons.psychology, 'title': 'AI Insights', 'desc': 'Smart recommendations powered by AI'},
-      {'icon': Icons.school, 'title': 'Learn & Grow', 'desc': 'Educational resources for all levels'},
+      {
+        'icon': Icons.speed,
+        'title': 'Real-time Data',
+        'desc': 'Live stock prices and market updates',
+      },
+      {
+        'icon': Icons.pie_chart,
+        'title': 'Portfolio Tracking',
+        'desc': 'Monitor your investments easily',
+      },
+      {
+        'icon': Icons.psychology,
+        'title': 'AI Insights',
+        'desc': 'Smart recommendations powered by AI',
+      },
+      {
+        'icon': Icons.school,
+        'title': 'Learn & Grow',
+        'desc': 'Educational resources for all levels',
+      },
     ];
 
     return Container(
@@ -113,18 +125,17 @@ class AboutView extends StackedView<AboutViewModel> {
             padding: EdgeInsets.all(16),
             child: Text(
               'Key Features',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
-          ...features.map((feature) => _buildFeatureItem(
-                context,
-                feature['icon'] as IconData,
-                feature['title'] as String,
-                feature['desc'] as String,
-              )),
+          ...features.map(
+            (feature) => _buildFeatureItem(
+              context,
+              feature['icon'] as IconData,
+              feature['title'] as String,
+              feature['desc'] as String,
+            ),
+          ),
         ],
       ),
     ).animate().fadeIn(delay: 100.ms);
@@ -176,39 +187,6 @@ class AboutView extends StackedView<AboutViewModel> {
     );
   }
 
-  Widget _buildLegalSection(BuildContext context, AboutViewModel viewModel) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        children: [
-          _buildLegalItem(
-            context,
-            'Privacy Policy',
-            Icons.privacy_tip_outlined,
-            viewModel.openPrivacyPolicy,
-          ),
-          _buildDivider(),
-          _buildLegalItem(
-            context,
-            'Terms of Service',
-            Icons.description_outlined,
-            viewModel.openTermsOfService,
-          ),
-          _buildDivider(),
-          _buildLegalItem(
-            context,
-            'Licenses',
-            Icons.article_outlined,
-            viewModel.openLicenses,
-          ),
-        ],
-      ),
-    ).animate().fadeIn(delay: 200.ms);
-  }
-
   Widget _buildLegalItem(
     BuildContext context,
     String title,
@@ -223,12 +201,7 @@ class AboutView extends StackedView<AboutViewModel> {
           children: [
             Icon(icon, color: AppColors.textSecondaryLight, size: 22),
             const SizedBox(width: 16),
-            Expanded(
-              child: Text(
-                title,
-                style: const TextStyle(fontSize: 14),
-              ),
-            ),
+            Expanded(child: Text(title, style: const TextStyle(fontSize: 14))),
             Icon(
               Icons.arrow_forward_ios,
               size: 16,
@@ -238,53 +211,6 @@ class AboutView extends StackedView<AboutViewModel> {
         ),
       ),
     );
-  }
-
-  Widget _buildSocialSection(BuildContext context, AboutViewModel viewModel) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        children: [
-          const Text(
-            'Connect With Us',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _buildSocialButton(
-                context,
-                Icons.language,
-                'Website',
-                viewModel.openWebsite,
-              ),
-              const SizedBox(width: 24),
-              _buildSocialButton(
-                context,
-                Icons.email_outlined,
-                'Email',
-                viewModel.openEmail,
-              ),
-              const SizedBox(width: 24),
-              _buildSocialButton(
-                context,
-                Icons.share,
-                'Share',
-                viewModel.shareApp,
-              ),
-            ],
-          ),
-        ],
-      ),
-    ).animate().fadeIn(delay: 300.ms);
   }
 
   Widget _buildSocialButton(
@@ -309,10 +235,7 @@ class AboutView extends StackedView<AboutViewModel> {
           const SizedBox(height: 8),
           Text(
             label,
-            style: TextStyle(
-              fontSize: 12,
-              color: AppColors.textSecondaryLight,
-            ),
+            style: TextStyle(fontSize: 12, color: AppColors.textSecondaryLight),
           ),
         ],
       ),
@@ -324,18 +247,12 @@ class AboutView extends StackedView<AboutViewModel> {
       children: [
         Text(
           'Made with ❤️ in India',
-          style: TextStyle(
-            color: AppColors.textSecondaryLight,
-            fontSize: 13,
-          ),
+          style: TextStyle(color: AppColors.textSecondaryLight, fontSize: 13),
         ),
         const SizedBox(height: 8),
         Text(
           '© 2024 Stock Trading App. All rights reserved.',
-          style: TextStyle(
-            color: AppColors.textSecondaryLight,
-            fontSize: 11,
-          ),
+          style: TextStyle(color: AppColors.textSecondaryLight, fontSize: 11),
         ),
       ],
     ).animate().fadeIn(delay: 400.ms);

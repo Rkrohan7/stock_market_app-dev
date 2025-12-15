@@ -108,10 +108,6 @@ class ProfileView extends StackedView<ProfileViewModel> {
               ],
             ),
           ),
-          IconButton(
-            icon: const Icon(Icons.edit_outlined, color: Colors.white),
-            onPressed: () {},
-          ),
         ],
       ),
     ).animate().fadeIn().scale(begin: const Offset(0.95, 0.95));
@@ -270,7 +266,10 @@ class ProfileView extends StackedView<ProfileViewModel> {
       child: OutlinedButton.icon(
         onPressed: viewModel.logout,
         icon: const Icon(Icons.logout_rounded, color: AppColors.error),
-        label: Text(AppLocalizations.of(context)!.logout, style: const TextStyle(color: AppColors.error)),
+        label: Text(
+          AppLocalizations.of(context)!.logout,
+          style: const TextStyle(color: AppColors.error),
+        ),
         style: OutlinedButton.styleFrom(
           side: const BorderSide(color: AppColors.error),
           padding: const EdgeInsets.symmetric(vertical: 14),

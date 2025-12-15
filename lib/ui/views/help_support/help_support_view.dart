@@ -26,12 +26,6 @@ class HelpSupportView extends StackedView<HelpSupportViewModel> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSearchBar(context),
-            const SizedBox(height: 24),
-            _buildSectionTitle(context, 'Quick Help'),
-            const SizedBox(height: 12),
-            _buildQuickHelpCards(context, viewModel),
-            const SizedBox(height: 24),
             _buildSectionTitle(context, 'FAQs'),
             const SizedBox(height: 12),
             _buildFaqSection(context, viewModel),
@@ -67,15 +61,14 @@ class HelpSupportView extends StackedView<HelpSupportViewModel> {
   Widget _buildSectionTitle(BuildContext context, String title) {
     return Text(
       title,
-      style: const TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-      ),
+      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
     );
   }
 
   Widget _buildQuickHelpCards(
-      BuildContext context, HelpSupportViewModel viewModel) {
+    BuildContext context,
+    HelpSupportViewModel viewModel,
+  ) {
     return Row(
       children: [
         Expanded(
@@ -129,10 +122,7 @@ class HelpSupportView extends StackedView<HelpSupportViewModel> {
             const SizedBox(height: 8),
             Text(
               title,
-              style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 12,
-              ),
+              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
               textAlign: TextAlign.center,
             ),
           ],
@@ -141,7 +131,10 @@ class HelpSupportView extends StackedView<HelpSupportViewModel> {
     );
   }
 
-  Widget _buildFaqSection(BuildContext context, HelpSupportViewModel viewModel) {
+  Widget _buildFaqSection(
+    BuildContext context,
+    HelpSupportViewModel viewModel,
+  ) {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
@@ -245,7 +238,9 @@ class HelpSupportView extends StackedView<HelpSupportViewModel> {
   }
 
   Widget _buildContactSection(
-      BuildContext context, HelpSupportViewModel viewModel) {
+    BuildContext context,
+    HelpSupportViewModel viewModel,
+  ) {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
