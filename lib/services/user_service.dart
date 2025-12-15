@@ -21,9 +21,7 @@ class UserService {
     String? email,
     String? photoUrl,
   }) async {
-    final data = <String, dynamic>{
-      'updatedAt': Timestamp.now(),
-    };
+    final data = <String, dynamic>{'updatedAt': Timestamp.now()};
 
     if (displayName != null) data['displayName'] = displayName;
     if (email != null) data['email'] = email;
@@ -103,9 +101,7 @@ class UserService {
         .where('isAdminVerified', isEqualTo: false)
         .get();
 
-    return snapshot.docs
-        .map((doc) => UserModel.fromJson(doc.data()))
-        .toList();
+    return snapshot.docs.map((doc) => UserModel.fromJson(doc.data())).toList();
   }
 
   // Stream pending verification users
@@ -113,11 +109,13 @@ class UserService {
     return _firestore
         .collection('users')
         .where('kycStatus', isEqualTo: KycStatus.submitted.name)
-        .where('isAdminVerified', isEqualTo: false)
+        // .where('isAdminVerified', isEqualTo: false)
         .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => UserModel.fromJson(doc.data()))
-            .toList());
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => UserModel.fromJson(doc.data()))
+              .toList(),
+        );
   }
 
   // Admin verify user

@@ -5,12 +5,16 @@ import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/user_service.dart';
+import '../../../services/notification_service.dart';
 import '../../../core/utils/validators.dart';
+import '../../../core/enums/enums.dart';
+import '../../../data/models/user_model.dart';
 
 class KycViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final _authService = locator<AuthService>();
   final _userService = locator<UserService>();
+  final _notificationService = locator<NotificationService>();
   final _snackbarService = locator<SnackbarService>();
 
   final panController = TextEditingController();
@@ -28,11 +32,46 @@ class KycViewModel extends BaseViewModel {
   String? _selfieUrl;
   String? get selfieUrl => _selfieUrl;
 
+  // Track if this is a resubmission after rejection
+  bool _isResubmission = false;
+  bool get isResubmission => _isResubmission;
+
+  String? _rejectionReason;
+  String? get rejectionReason => _rejectionReason;
+
+  UserModel? _currentUser;
+
   bool get canProceedFromPan =>
       panController.text.length == 10 && _panError == null;
 
   bool get canProceedFromAadhaar =>
       aadhaarController.text.length == 12 && _aadhaarError == null;
+
+  // Selfie is now mandatory - can only proceed if selfie is captured
+  bool get canProceedFromSelfie => _selfieUrl != null;
+
+  // Can submit only if all fields are filled including selfie
+  bool get canSubmit =>
+      panController.text.length == 10 &&
+      aadhaarController.text.length == 12 &&
+      _selfieUrl != null;
+
+  Future<void> initialize() async {
+    setBusy(true);
+    try {
+      final userId = _authService.userId;
+      if (userId != null) {
+        _currentUser = await _userService.getUserById(userId);
+        if (_currentUser != null && _currentUser!.kycStatus == KycStatus.rejected) {
+          _isResubmission = true;
+          _rejectionReason = _currentUser!.rejectionReason;
+        }
+      }
+    } catch (e) {
+      // Ignore errors during initialization
+    }
+    setBusy(false);
+  }
 
   void validatePan() {
     final pan = panController.text;
@@ -59,6 +98,15 @@ class KycViewModel extends BaseViewModel {
   }
 
   void nextStep() {
+    // Validate before moving to next step
+    if (_currentStep == 2 && _selfieUrl == null) {
+      _snackbarService.showSnackbar(
+        message: 'Please capture your selfie to continue',
+        duration: const Duration(seconds: 2),
+      );
+      return;
+    }
+
     if (_currentStep < 3) {
       _currentStep++;
       notifyListeners();
@@ -83,7 +131,21 @@ class KycViewModel extends BaseViewModel {
     );
   }
 
+  void retakeSelfie() {
+    _selfieUrl = null;
+    notifyListeners();
+  }
+
   Future<void> submitKyc() async {
+    // Validate selfie before submission
+    if (_selfieUrl == null) {
+      _snackbarService.showSnackbar(
+        message: 'Selfie is mandatory. Please capture your selfie.',
+        duration: const Duration(seconds: 3),
+      );
+      return;
+    }
+
     setBusy(true);
 
     try {
@@ -97,8 +159,13 @@ class KycViewModel extends BaseViewModel {
         selfieUrl: _selfieUrl,
       );
 
+      // Show KYC submitted notification
+      await _notificationService.showKycSubmittedNotification();
+
       _snackbarService.showSnackbar(
-        message: 'KYC submitted successfully! Under review.',
+        message: _isResubmission
+            ? 'KYC resubmitted successfully! Under review.'
+            : 'KYC submitted successfully! Under review.',
         duration: const Duration(seconds: 3),
       );
 
@@ -111,10 +178,6 @@ class KycViewModel extends BaseViewModel {
     } finally {
       setBusy(false);
     }
-  }
-
-  void skipKyc() {
-    _navigationService.clearStackAndShow(Routes.homeView);
   }
 
   @override

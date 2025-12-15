@@ -15,35 +15,103 @@ class KycView extends StackedView<KycViewModel> {
   ) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('KYC Verification'),
+        title: Text(viewModel.isResubmission ? 'Resubmit KYC' : 'KYC Verification'),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Progress Steps
-              _buildProgressSteps(viewModel.currentStep),
+      body: viewModel.isBusy && viewModel.currentStep == 0
+          ? const Center(child: CircularProgressIndicator())
+          : SafeArea(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Show rejection reason banner if resubmitting
+                    if (viewModel.isResubmission && viewModel.rejectionReason != null) ...[
+                      _buildRejectionBanner(context, viewModel.rejectionReason!),
+                      const SizedBox(height: 24),
+                    ],
 
-              const SizedBox(height: 32),
+                    // Progress Steps
+                    _buildProgressSteps(viewModel.currentStep),
 
-              // Step Content
-              if (viewModel.currentStep == 0) ...[
-                _buildPanSection(context, viewModel),
-              ] else if (viewModel.currentStep == 1) ...[
-                _buildAadhaarSection(context, viewModel),
-              ] else if (viewModel.currentStep == 2) ...[
-                _buildSelfieSection(context, viewModel),
-              ] else ...[
-                _buildReviewSection(context, viewModel),
-              ],
-            ],
-          ),
-        ),
-      ),
+                    const SizedBox(height: 32),
+
+                    // Step Content
+                    if (viewModel.currentStep == 0) ...[
+                      _buildPanSection(context, viewModel),
+                    ] else if (viewModel.currentStep == 1) ...[
+                      _buildAadhaarSection(context, viewModel),
+                    ] else if (viewModel.currentStep == 2) ...[
+                      _buildSelfieSection(context, viewModel),
+                    ] else ...[
+                      _buildReviewSection(context, viewModel),
+                    ],
+                  ],
+                ),
+              ),
+            ),
     );
+  }
+
+  Widget _buildRejectionBanner(BuildContext context, String reason) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.error.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.error.withValues(alpha: 0.3)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: AppColors.error.withValues(alpha: 0.2),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.error_outline,
+              color: AppColors.error,
+              size: 24,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'KYC Rejected',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.error,
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Reason: $reason',
+                  style: const TextStyle(
+                    color: AppColors.textSecondaryLight,
+                    fontSize: 12,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                const Text(
+                  'Please resubmit your KYC with correct details.',
+                  style: TextStyle(
+                    color: AppColors.textSecondaryLight,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ).animate().fadeIn().shake(delay: 200.ms, duration: 500.ms);
   }
 
   Widget _buildProgressSteps(int currentStep) {
@@ -108,6 +176,33 @@ class KycView extends StackedView<KycViewModel> {
               ),
         ).animate().fadeIn(delay: 100.ms),
 
+        const SizedBox(height: 16),
+
+        // Mandatory notice
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: AppColors.primary.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Row(
+            children: [
+              Icon(Icons.info_outline, color: AppColors.primary, size: 20),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  'KYC verification is mandatory to start trading',
+                  style: TextStyle(
+                    color: AppColors.primary,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ).animate().fadeIn(delay: 150.ms),
+
         const SizedBox(height: 24),
 
         TextField(
@@ -144,15 +239,6 @@ class KycView extends StackedView<KycViewModel> {
             child: const Text('Continue'),
           ),
         ).animate().fadeIn(delay: 300.ms),
-
-        const SizedBox(height: 16),
-
-        Center(
-          child: TextButton(
-            onPressed: viewModel.skipKyc,
-            child: const Text('Skip for now'),
-          ),
-        ),
       ],
     );
   }
@@ -246,11 +332,38 @@ class KycView extends StackedView<KycViewModel> {
               ),
         ).animate().fadeIn(delay: 100.ms),
 
-        const SizedBox(height: 32),
+        const SizedBox(height: 16),
+
+        // Mandatory notice
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: AppColors.warning.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Row(
+            children: [
+              Icon(Icons.warning_amber_rounded, color: AppColors.warning, size: 20),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  'Selfie capture is mandatory for KYC verification',
+                  style: TextStyle(
+                    color: AppColors.warning,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ).animate().fadeIn(delay: 150.ms),
+
+        const SizedBox(height: 24),
 
         Center(
           child: GestureDetector(
-            onTap: viewModel.takeSelfie,
+            onTap: viewModel.selfieUrl == null ? viewModel.takeSelfie : null,
             child: Container(
               width: 200,
               height: 200,
@@ -258,7 +371,7 @@ class KycView extends StackedView<KycViewModel> {
                 color: AppColors.primary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(100),
                 border: Border.all(
-                  color: AppColors.primary,
+                  color: viewModel.selfieUrl != null ? AppColors.profit : AppColors.primary,
                   width: 3,
                   strokeAlign: BorderSide.strokeAlignOutside,
                 ),
@@ -293,6 +406,18 @@ class KycView extends StackedView<KycViewModel> {
           ),
         ).animate().fadeIn(delay: 200.ms).scale(begin: const Offset(0.9, 0.9)),
 
+        // Retake button when selfie is captured
+        if (viewModel.selfieUrl != null) ...[
+          const SizedBox(height: 16),
+          Center(
+            child: TextButton.icon(
+              onPressed: viewModel.retakeSelfie,
+              icon: const Icon(Icons.refresh),
+              label: const Text('Retake Selfie'),
+            ),
+          ).animate().fadeIn(delay: 250.ms),
+        ],
+
         const SizedBox(height: 32),
 
         Row(
@@ -306,12 +431,26 @@ class KycView extends StackedView<KycViewModel> {
             const SizedBox(width: 16),
             Expanded(
               child: ElevatedButton(
-                onPressed: viewModel.nextStep,
+                onPressed: viewModel.canProceedFromSelfie ? viewModel.nextStep : null,
                 child: const Text('Continue'),
               ),
             ),
           ],
         ).animate().fadeIn(delay: 300.ms),
+
+        // Hint text if selfie not captured
+        if (viewModel.selfieUrl == null) ...[
+          const SizedBox(height: 12),
+          Center(
+            child: Text(
+              'Please capture your selfie to continue',
+              style: TextStyle(
+                color: AppColors.textSecondaryLight,
+                fontSize: 12,
+              ),
+            ),
+          ),
+        ],
       ],
     );
   }
@@ -355,7 +494,7 @@ class KycView extends StackedView<KycViewModel> {
             const SizedBox(width: 16),
             Expanded(
               child: ElevatedButton(
-                onPressed: viewModel.isBusy ? null : viewModel.submitKyc,
+                onPressed: viewModel.isBusy || !viewModel.canSubmit ? null : viewModel.submitKyc,
                 child: viewModel.isBusy
                     ? const SizedBox(
                         width: 24,
@@ -365,7 +504,7 @@ class KycView extends StackedView<KycViewModel> {
                           valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                         ),
                       )
-                    : const Text('Submit KYC'),
+                    : Text(viewModel.isResubmission ? 'Resubmit KYC' : 'Submit KYC'),
               ),
             ),
           ],
@@ -405,4 +544,7 @@ class KycView extends StackedView<KycViewModel> {
 
   @override
   KycViewModel viewModelBuilder(BuildContext context) => KycViewModel();
+
+  @override
+  void onViewModelReady(KycViewModel viewModel) => viewModel.initialize();
 }

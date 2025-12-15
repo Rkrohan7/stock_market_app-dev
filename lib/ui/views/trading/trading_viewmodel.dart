@@ -33,11 +33,22 @@ class TradingViewModel extends BaseViewModel {
 
   // User verification status
   UserModel? _currentUser;
-  bool get isUserVerified => _currentUser?.canTrade ?? false;
+  UserModel? get currentUser => _currentUser;
+
+  // Admin users can trade without KYC
+  bool get isAdmin => _authService.isAdmin;
+  bool get isUserVerified => isAdmin || (_currentUser?.canTrade ?? false);
   bool get isVerificationPending =>
+      !isAdmin &&
       _currentUser != null &&
       _currentUser!.kycStatus == KycStatus.submitted &&
       !_currentUser!.isAdminVerified;
+
+  // Check if KYC needs to be completed (not for admin)
+  bool get needsKyc => !isAdmin && (_currentUser?.needsKyc ?? true);
+
+  // Check if KYC is rejected
+  bool get isKycRejected => !isAdmin && (_currentUser?.isKycRejected ?? false);
 
   final quantityController = TextEditingController();
   final priceController = TextEditingController();
@@ -223,7 +234,35 @@ class TradingViewModel extends BaseViewModel {
   String _orderId = '';
   String get orderId => _orderId;
 
+  // Show KYC pending message
+  void showKycPendingMessage() {
+    if (needsKyc) {
+      _dialogService.showDialog(
+        title: 'KYC Required',
+        description: isKycRejected
+            ? 'Your KYC was rejected. Please resubmit your KYC to start trading.'
+            : 'Please complete your KYC verification to start trading.',
+        buttonTitle: isKycRejected ? 'Resubmit KYC' : 'Complete KYC',
+      ).then((result) {
+        if (result?.confirmed ?? false) {
+          _navigationService.navigateTo(Routes.kycView);
+        }
+      });
+    } else if (isVerificationPending) {
+      _snackbarService.showSnackbar(
+        message: 'Your KYC is pending admin approval. Please wait for verification.',
+        duration: const Duration(seconds: 3),
+      );
+    }
+  }
+
   Future<void> placeOrder() async {
+    // Check KYC status before allowing order
+    if (!isUserVerified) {
+      showKycPendingMessage();
+      return;
+    }
+
     if (!canPlaceOrder) return;
 
     final confirmed = await _dialogService.showConfirmationDialog(

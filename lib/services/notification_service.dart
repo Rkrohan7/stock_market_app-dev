@@ -12,6 +12,7 @@ class NotificationService {
   static const String _newsAlertChannelId = 'news_alerts';
   static const String _orderChannelId = 'order_notifications';
   static const String _marketChannelId = 'market_notifications';
+  static const String _kycChannelId = 'kyc_notifications';
 
   // Callback for handling notification taps
   Function(String? payload)? onNotificationTapped;
@@ -93,6 +94,18 @@ class NotificationService {
           'Market Notifications',
           description: 'General market notifications',
           importance: Importance.defaultImportance,
+          enableVibration: true,
+          playSound: true,
+        ),
+      );
+
+      // KYC Notifications Channel
+      await androidPlugin.createNotificationChannel(
+        const AndroidNotificationChannel(
+          _kycChannelId,
+          'KYC Notifications',
+          description: 'Notifications for KYC status updates',
+          importance: Importance.high,
           enableVibration: true,
           playSound: true,
         ),
@@ -342,6 +355,54 @@ class NotificationService {
     );
   }
 
+  // Show KYC approved notification
+  Future<void> showKycApprovedNotification() async {
+    final payload = jsonEncode({
+      'type': 'kyc',
+      'status': 'approved',
+    });
+
+    await showNotification(
+      title: 'KYC Approved!',
+      body: 'Congratulations! Your KYC has been verified. You can now start trading.',
+      payload: payload,
+      channelId: _kycChannelId,
+    );
+  }
+
+  // Show KYC rejected notification
+  Future<void> showKycRejectedNotification({String? reason}) async {
+    final payload = jsonEncode({
+      'type': 'kyc',
+      'status': 'rejected',
+      'reason': reason,
+    });
+
+    await showNotification(
+      title: 'KYC Rejected',
+      body: reason != null
+          ? 'Your KYC was rejected. Reason: $reason. Please resubmit with correct details.'
+          : 'Your KYC was rejected. Please resubmit with correct details.',
+      payload: payload,
+      channelId: _kycChannelId,
+    );
+  }
+
+  // Show KYC submitted notification (for user)
+  Future<void> showKycSubmittedNotification() async {
+    final payload = jsonEncode({
+      'type': 'kyc',
+      'status': 'submitted',
+    });
+
+    await showNotification(
+      title: 'KYC Submitted',
+      body: 'Your KYC has been submitted for review. We will notify you once it is verified.',
+      payload: payload,
+      channelId: _kycChannelId,
+    );
+  }
+
   // Subscribe to topic
   Future<void> subscribeToTopic(String topic) async {
     await _firebaseMessaging.subscribeToTopic(topic);
@@ -383,6 +444,8 @@ class NotificationService {
         return 'Order Notifications';
       case _marketChannelId:
         return 'Market Notifications';
+      case _kycChannelId:
+        return 'KYC Notifications';
       default:
         return 'Notifications';
     }
@@ -398,6 +461,8 @@ class NotificationService {
         return 'Notifications for order status updates';
       case _marketChannelId:
         return 'General market notifications';
+      case _kycChannelId:
+        return 'Notifications for KYC status updates';
       default:
         return 'App notifications';
     }

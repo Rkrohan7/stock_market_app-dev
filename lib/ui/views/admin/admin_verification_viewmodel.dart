@@ -4,11 +4,13 @@ import 'package:stacked_services/stacked_services.dart';
 import '../../../app/app.locator.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/user_service.dart';
+import '../../../services/notification_service.dart';
 import '../../../data/models/user_model.dart';
 
 class AdminVerificationViewModel extends BaseViewModel {
   final _authService = locator<AuthService>();
   final _userService = locator<UserService>();
+  final _notificationService = locator<NotificationService>();
   final _navigationService = locator<NavigationService>();
   final _snackbarService = locator<SnackbarService>();
   final _dialogService = locator<DialogService>();
@@ -64,6 +66,10 @@ class AdminVerificationViewModel extends BaseViewModel {
     if (result?.confirmed ?? false) {
       try {
         await _userService.verifyUser(userId: user.uid, adminId: adminId!);
+
+        // Send KYC approved notification
+        await _notificationService.showKycApprovedNotification();
+
         _snackbarService.showSnackbar(
           message: '${user.displayName ?? user.email} has been verified',
           duration: const Duration(seconds: 2),
@@ -88,10 +94,15 @@ class AdminVerificationViewModel extends BaseViewModel {
 
     if (result?.confirmed ?? false) {
       try {
+        const rejectionReason = 'KYC documents could not be verified. Please resubmit with clear documents.';
         await _userService.rejectUserVerification(
           userId: user.uid,
-          reason: 'Rejected by admin',
+          reason: rejectionReason,
         );
+
+        // Send KYC rejected notification
+        await _notificationService.showKycRejectedNotification(reason: rejectionReason);
+
         _snackbarService.showSnackbar(
           message: '${user.displayName ?? user.email} has been rejected',
           duration: const Duration(seconds: 2),
