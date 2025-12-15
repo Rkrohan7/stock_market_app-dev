@@ -8,9 +8,15 @@ class AuthService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
+  // Admin email constant
+  static const String adminEmail = 'sumit@multigenesys.com';
+
   User? get currentUser => _auth.currentUser;
   bool get isLoggedIn => currentUser != null;
   String? get userId => currentUser?.uid;
+
+  /// Check if current user is admin
+  bool get isAdmin => currentUser?.email == adminEmail;
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 

@@ -186,6 +186,17 @@ class ProfileView extends StackedView<ProfileViewModel> {
       ),
       child: Column(
         children: [
+          // Admin Panel option - only shown for admin users
+          if (viewModel.isAdmin) ...[
+            _buildMenuItem(
+              context,
+              'Admin Panel',
+              Icons.admin_panel_settings,
+              onTap: viewModel.openAdminPanel,
+              iconColor: AppColors.warning,
+            ),
+            _buildDivider(),
+          ],
           _buildMenuItem(
             context,
             l10n.darkMode,
@@ -222,6 +233,7 @@ class ProfileView extends StackedView<ProfileViewModel> {
     IconData icon, {
     VoidCallback? onTap,
     Widget? trailing,
+    Color? iconColor,
   }) {
     return InkWell(
       onTap: onTap,
@@ -229,7 +241,7 @@ class ProfileView extends StackedView<ProfileViewModel> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         child: Row(
           children: [
-            Icon(icon, color: AppColors.primary, size: 22),
+            Icon(icon, color: iconColor ?? AppColors.primary, size: 22),
             const SizedBox(width: 16),
             Expanded(child: Text(title, style: const TextStyle(fontSize: 15))),
             trailing ??

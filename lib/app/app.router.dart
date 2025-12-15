@@ -5,12 +5,14 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i28;
+import 'package:flutter/material.dart' as _i29;
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i30;
-import 'package:stock_trading_app/data/models/education_model.dart' as _i29;
+import 'package:stacked_services/stacked_services.dart' as _i31;
+import 'package:stock_trading_app/data/models/education_model.dart' as _i30;
 import 'package:stock_trading_app/ui/views/about/about_view.dart' as _i23;
+import 'package:stock_trading_app/ui/views/admin/admin_verification_view.dart'
+    as _i28;
 import 'package:stock_trading_app/ui/views/ai_suggestions/ai_suggestions_view.dart'
     as _i14;
 import 'package:stock_trading_app/ui/views/auth/kyc_view.dart' as _i4;
@@ -103,6 +105,8 @@ class Routes {
 
   static const termsOfServiceView = '/terms-of-service-view';
 
+  static const adminVerificationView = '/admin-verification-view';
+
   static const all = <String>{
     startupView,
     loginView,
@@ -130,6 +134,7 @@ class Routes {
     newsAlertsView,
     privacyPolicyView,
     termsOfServiceView,
+    adminVerificationView,
   };
 }
 
@@ -239,54 +244,58 @@ class StackedRouter extends _i1.RouterBase {
       Routes.termsOfServiceView,
       page: _i27.TermsOfServiceView,
     ),
+    _i1.RouteDef(
+      Routes.adminVerificationView,
+      page: _i28.AdminVerificationView,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.StartupView: (data) {
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => const _i2.StartupView(),
         settings: data,
       );
     },
     _i3.LoginView: (data) {
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => const _i3.LoginView(),
         settings: data,
       );
     },
     _i4.KycView: (data) {
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => const _i4.KycView(),
         settings: data,
       );
     },
     _i5.HomeView: (data) {
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => const _i5.HomeView(),
         settings: data,
       );
     },
     _i6.MarketView: (data) {
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => const _i6.MarketView(),
         settings: data,
       );
     },
     _i7.PortfolioView: (data) {
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => const _i7.PortfolioView(),
         settings: data,
       );
     },
     _i8.WatchlistView: (data) {
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => const _i8.WatchlistView(),
         settings: data,
       );
     },
     _i9.StockDetailsView: (data) {
       final args = data.getArgs<StockDetailsViewArguments>(nullOk: false);
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i9.StockDetailsView(key: args.key, symbol: args.symbol),
         settings: data,
@@ -294,113 +303,119 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i10.TradingView: (data) {
       final args = data.getArgs<TradingViewArguments>(nullOk: false);
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => _i10.TradingView(
             key: args.key, symbol: args.symbol, isBuy: args.isBuy),
         settings: data,
       );
     },
     _i11.NewsView: (data) {
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => const _i11.NewsView(),
         settings: data,
       );
     },
     _i12.EducationView: (data) {
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => const _i12.EducationView(),
         settings: data,
       );
     },
     _i13.BlogDetailView: (data) {
       final args = data.getArgs<BlogDetailViewArguments>(nullOk: false);
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i13.BlogDetailView(key: args.key, blog: args.blog),
         settings: data,
       );
     },
     _i14.AiSuggestionsView: (data) {
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => const _i14.AiSuggestionsView(),
         settings: data,
       );
     },
     _i15.ProfileView: (data) {
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => const _i15.ProfileView(),
         settings: data,
       );
     },
     _i16.SearchView: (data) {
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => const _i16.SearchView(),
         settings: data,
       );
     },
     _i17.SettingsView: (data) {
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => const _i17.SettingsView(),
         settings: data,
       );
     },
     _i18.FundView: (data) {
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => const _i18.FundView(),
         settings: data,
       );
     },
     _i19.AddFundsView: (data) {
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => const _i19.AddFundsView(),
         settings: data,
       );
     },
     _i20.WithdrawFundsView: (data) {
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => const _i20.WithdrawFundsView(),
         settings: data,
       );
     },
     _i21.OrderHistoryView: (data) {
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => const _i21.OrderHistoryView(),
         settings: data,
       );
     },
     _i22.HelpSupportView: (data) {
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => const _i22.HelpSupportView(),
         settings: data,
       );
     },
     _i23.AboutView: (data) {
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => const _i23.AboutView(),
         settings: data,
       );
     },
     _i24.PriceAlertsView: (data) {
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => const _i24.PriceAlertsView(),
         settings: data,
       );
     },
     _i25.NewsAlertsView: (data) {
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => const _i25.NewsAlertsView(),
         settings: data,
       );
     },
     _i26.PrivacyPolicyView: (data) {
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => const _i26.PrivacyPolicyView(),
         settings: data,
       );
     },
     _i27.TermsOfServiceView: (data) {
-      return _i28.MaterialPageRoute<dynamic>(
+      return _i29.MaterialPageRoute<dynamic>(
         builder: (context) => const _i27.TermsOfServiceView(),
+        settings: data,
+      );
+    },
+    _i28.AdminVerificationView: (data) {
+      return _i29.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i28.AdminVerificationView(),
         settings: data,
       );
     },
@@ -419,7 +434,7 @@ class StockDetailsViewArguments {
     required this.symbol,
   });
 
-  final _i28.Key? key;
+  final _i29.Key? key;
 
   final String symbol;
 
@@ -447,7 +462,7 @@ class TradingViewArguments {
     required this.isBuy,
   });
 
-  final _i28.Key? key;
+  final _i29.Key? key;
 
   final String symbol;
 
@@ -476,9 +491,9 @@ class BlogDetailViewArguments {
     required this.blog,
   });
 
-  final _i28.Key? key;
+  final _i29.Key? key;
 
-  final _i29.BlogModel blog;
+  final _i30.BlogModel blog;
 
   @override
   String toString() {
@@ -497,7 +512,7 @@ class BlogDetailViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i30.NavigationService {
+extension NavigatorStateExtension on _i31.NavigationService {
   Future<dynamic> navigateToStartupView([
     int? routerId,
     bool preventDuplicates = true,
@@ -597,7 +612,7 @@ extension NavigatorStateExtension on _i30.NavigationService {
   }
 
   Future<dynamic> navigateToStockDetailsView({
-    _i28.Key? key,
+    _i29.Key? key,
     required String symbol,
     int? routerId,
     bool preventDuplicates = true,
@@ -614,7 +629,7 @@ extension NavigatorStateExtension on _i30.NavigationService {
   }
 
   Future<dynamic> navigateToTradingView({
-    _i28.Key? key,
+    _i29.Key? key,
     required String symbol,
     required bool isBuy,
     int? routerId,
@@ -660,8 +675,8 @@ extension NavigatorStateExtension on _i30.NavigationService {
   }
 
   Future<dynamic> navigateToBlogDetailView({
-    _i28.Key? key,
-    required _i29.BlogModel blog,
+    _i29.Key? key,
+    required _i30.BlogModel blog,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -872,6 +887,20 @@ extension NavigatorStateExtension on _i30.NavigationService {
         transition: transition);
   }
 
+  Future<dynamic> navigateToAdminVerificationView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.adminVerificationView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
   Future<dynamic> replaceWithStartupView([
     int? routerId,
     bool preventDuplicates = true,
@@ -971,7 +1000,7 @@ extension NavigatorStateExtension on _i30.NavigationService {
   }
 
   Future<dynamic> replaceWithStockDetailsView({
-    _i28.Key? key,
+    _i29.Key? key,
     required String symbol,
     int? routerId,
     bool preventDuplicates = true,
@@ -988,7 +1017,7 @@ extension NavigatorStateExtension on _i30.NavigationService {
   }
 
   Future<dynamic> replaceWithTradingView({
-    _i28.Key? key,
+    _i29.Key? key,
     required String symbol,
     required bool isBuy,
     int? routerId,
@@ -1034,8 +1063,8 @@ extension NavigatorStateExtension on _i30.NavigationService {
   }
 
   Future<dynamic> replaceWithBlogDetailView({
-    _i28.Key? key,
-    required _i29.BlogModel blog,
+    _i29.Key? key,
+    required _i30.BlogModel blog,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1240,6 +1269,20 @@ extension NavigatorStateExtension on _i30.NavigationService {
         transition,
   ]) async {
     return replaceWith<dynamic>(Routes.termsOfServiceView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithAdminVerificationView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.adminVerificationView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

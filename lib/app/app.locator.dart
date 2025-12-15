@@ -15,8 +15,6 @@ import 'package:stacked_shared/stacked_shared.dart';
 import '../services/ai_service.dart';
 import '../services/alert_service.dart';
 import '../services/auth_service.dart';
-import '../services/fund_service.dart';
-import '../services/razorpay_service.dart';
 import '../services/connectivity_service.dart';
 import '../services/education_service.dart';
 import '../services/localization_service.dart';
@@ -55,8 +53,6 @@ Future<void> setupLocator({
   locator.registerLazySingleton(() => AiService());
   locator.registerLazySingleton(() => NotificationService());
   locator.registerLazySingleton(() => AlertService());
-  locator.registerLazySingleton(() => FundService());
-  locator.registerLazySingleton(() => RazorpayService());
   locator.registerLazySingleton(() => ThemeService());
   locator.registerLazySingleton(() => ConnectivityService());
   locator.registerLazySingleton(() => LocalizationService());

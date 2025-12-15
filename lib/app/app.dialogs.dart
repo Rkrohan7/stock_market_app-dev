@@ -9,7 +9,8 @@ import 'package:stacked_services/stacked_services.dart';
 import 'app.locator.dart';
 
 enum DialogType {
-  infoAlert,
+  // Add dialog types here when needed
+  none,
 }
 
 void setupDialogUi() {

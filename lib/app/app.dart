@@ -44,6 +44,7 @@ import '../ui/views/price_alerts/price_alerts_view.dart';
 import '../ui/views/news_alerts/news_alerts_view.dart';
 import '../ui/views/privacy_policy/privacy_policy_view.dart';
 import '../ui/views/terms_of_service/terms_of_service_view.dart';
+import '../ui/views/admin/admin_verification_view.dart';
 
 @StackedApp(
   routes: [
@@ -73,6 +74,7 @@ import '../ui/views/terms_of_service/terms_of_service_view.dart';
     MaterialRoute(page: NewsAlertsView),
     MaterialRoute(page: PrivacyPolicyView),
     MaterialRoute(page: TermsOfServiceView),
+    MaterialRoute(page: AdminVerificationView),
   ],
   dependencies: [
     // Stacked Services

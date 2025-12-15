@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/enums/enums.dart';
 import '../../../app/app.router.dart';
+import '../../../data/models/fund_transaction_model.dart';
 import 'fund_viewmodel.dart';
 
 class FundView extends StackedView<FundViewModel> {
@@ -237,7 +238,7 @@ class FundView extends StackedView<FundViewModel> {
 
   Widget _buildTransactionItem(
     BuildContext context,
-    dynamic transaction,
+    FundTransactionModel transaction,
     NumberFormat currencyFormat,
   ) {
     final isDeposit = transaction.type == FundTransactionType.deposit;

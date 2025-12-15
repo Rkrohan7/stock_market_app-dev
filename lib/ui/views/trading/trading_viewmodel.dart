@@ -7,9 +7,12 @@ import '../../../services/stock_service.dart';
 import '../../../services/order_service.dart';
 import '../../../services/portfolio_service.dart';
 import '../../../services/auth_service.dart';
+import '../../../services/fund_service.dart';
+import '../../../services/user_service.dart';
 import '../../../data/models/stock_model.dart';
 import '../../../data/models/order_model.dart';
 import '../../../data/models/portfolio_model.dart';
+import '../../../data/models/user_model.dart';
 import '../../../core/enums/enums.dart';
 
 class TradingViewModel extends BaseViewModel {
@@ -18,6 +21,8 @@ class TradingViewModel extends BaseViewModel {
   final _orderService = locator<OrderService>();
   final _portfolioService = locator<PortfolioService>();
   final _authService = locator<AuthService>();
+  final _fundService = locator<FundService>();
+  final _userService = locator<UserService>();
   final _snackbarService = locator<SnackbarService>();
   final _dialogService = locator<DialogService>();
 
@@ -25,6 +30,14 @@ class TradingViewModel extends BaseViewModel {
   final bool isBuy;
 
   TradingViewModel({required this.symbol, required this.isBuy});
+
+  // User verification status
+  UserModel? _currentUser;
+  bool get isUserVerified => _currentUser?.canTrade ?? false;
+  bool get isVerificationPending =>
+      _currentUser != null &&
+      _currentUser!.kycStatus == KycStatus.submitted &&
+      !_currentUser!.isAdminVerified;
 
   final quantityController = TextEditingController();
   final priceController = TextEditingController();
@@ -35,6 +48,10 @@ class TradingViewModel extends BaseViewModel {
   // Available quantity in portfolio (for selling)
   int _availableQuantity = 0;
   int get availableQuantity => _availableQuantity;
+
+  // Wallet balance (for buying)
+  double _walletBalance = 0;
+  double get walletBalance => _walletBalance;
 
   // Holding info
   HoldingModel? _holding;
@@ -60,11 +77,17 @@ class TradingViewModel extends BaseViewModel {
 
   double get totalValue => isBuy ? estimatedValue + brokerage : estimatedValue - brokerage;
 
-  // For buy: just check quantity > 0
-  // For sell: check quantity > 0 AND quantity <= available shares
+  // For buy: check quantity > 0 AND sufficient balance AND user verified
+  // For sell: check quantity > 0 AND quantity <= available shares AND user verified
   bool get canPlaceOrder {
+    // User must be verified by admin to trade
+    if (!isUserVerified) return false;
+
     if (_quantity <= 0) return false;
     if (orderType == OrderType.limit && _limitPrice <= 0) return false;
+
+    // For buy orders, validate against wallet balance
+    if (isBuy && totalValue > _walletBalance) return false;
 
     // For sell orders, validate against available quantity
     if (!isBuy && _quantity > _availableQuantity) return false;
@@ -72,8 +95,14 @@ class TradingViewModel extends BaseViewModel {
     return true;
   }
 
-  // Error message for invalid sell quantity
+  // Check if user has insufficient balance for buy
+  bool get hasInsufficientBalance => isBuy && totalValue > _walletBalance && _quantity > 0;
+
+  // Error message for invalid quantity or insufficient balance
   String? get quantityError {
+    if (isBuy && _quantity > 0 && totalValue > _walletBalance) {
+      return 'Insufficient balance. You need ₹${totalValue.toStringAsFixed(2)} but have ₹${_walletBalance.toStringAsFixed(2)}';
+    }
     if (!isBuy && _quantity > _availableQuantity) {
       return 'You only have $_availableQuantity shares available to sell';
     }
@@ -82,11 +111,38 @@ class TradingViewModel extends BaseViewModel {
 
   Future<void> initialize() async {
     setBusy(true);
+    await _loadUserVerificationStatus();
     await _loadStockDetails();
-    if (!isBuy) {
+    if (isBuy) {
+      await _loadWalletBalance();
+    } else {
       await _loadHolding();
     }
     setBusy(false);
+  }
+
+  Future<void> _loadUserVerificationStatus() async {
+    final userId = _authService.userId;
+    if (userId == null) return;
+
+    try {
+      _currentUser = await _userService.getUserById(userId);
+    } catch (e) {
+      _currentUser = null;
+    }
+    notifyListeners();
+  }
+
+  Future<void> _loadWalletBalance() async {
+    final userId = _authService.userId;
+    if (userId == null) return;
+
+    try {
+      _walletBalance = await _fundService.getWalletBalance(userId);
+    } catch (e) {
+      _walletBalance = 0;
+    }
+    notifyListeners();
   }
 
   Future<void> _loadStockDetails() async {

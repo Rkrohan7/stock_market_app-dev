@@ -13,6 +13,10 @@ class UserModel {
   final bool isTwoFactorEnabled;
   final bool isBiometricEnabled;
   final double walletBalance;
+  final bool isAdmin;
+  final bool isAdminVerified;
+  final String? adminVerifiedBy;
+  final DateTime? adminVerifiedAt;
   final DateTime createdAt;
   final DateTime? updatedAt;
 
@@ -28,6 +32,10 @@ class UserModel {
     this.isTwoFactorEnabled = false,
     this.isBiometricEnabled = false,
     this.walletBalance = 0,
+    this.isAdmin = false,
+    this.isAdminVerified = false,
+    this.adminVerifiedBy,
+    this.adminVerifiedAt,
     required this.createdAt,
     this.updatedAt,
   });
@@ -48,6 +56,12 @@ class UserModel {
       isTwoFactorEnabled: json['isTwoFactorEnabled'] as bool? ?? false,
       isBiometricEnabled: json['isBiometricEnabled'] as bool? ?? false,
       walletBalance: (json['walletBalance'] as num?)?.toDouble() ?? 0,
+      isAdmin: json['isAdmin'] as bool? ?? false,
+      isAdminVerified: json['isAdminVerified'] as bool? ?? false,
+      adminVerifiedBy: json['adminVerifiedBy'] as String?,
+      adminVerifiedAt: json['adminVerifiedAt'] != null
+          ? (json['adminVerifiedAt'] as Timestamp).toDate()
+          : null,
       createdAt: (json['createdAt'] as Timestamp).toDate(),
       updatedAt: json['updatedAt'] != null
           ? (json['updatedAt'] as Timestamp).toDate()
@@ -68,6 +82,10 @@ class UserModel {
       'isTwoFactorEnabled': isTwoFactorEnabled,
       'isBiometricEnabled': isBiometricEnabled,
       'walletBalance': walletBalance,
+      'isAdmin': isAdmin,
+      'isAdminVerified': isAdminVerified,
+      'adminVerifiedBy': adminVerifiedBy,
+      'adminVerifiedAt': adminVerifiedAt != null ? Timestamp.fromDate(adminVerifiedAt!) : null,
       'createdAt': Timestamp.fromDate(createdAt),
       'updatedAt': updatedAt != null ? Timestamp.fromDate(updatedAt!) : null,
     };
@@ -85,6 +103,10 @@ class UserModel {
     bool? isTwoFactorEnabled,
     bool? isBiometricEnabled,
     double? walletBalance,
+    bool? isAdmin,
+    bool? isAdminVerified,
+    String? adminVerifiedBy,
+    DateTime? adminVerifiedAt,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -100,10 +122,17 @@ class UserModel {
       isTwoFactorEnabled: isTwoFactorEnabled ?? this.isTwoFactorEnabled,
       isBiometricEnabled: isBiometricEnabled ?? this.isBiometricEnabled,
       walletBalance: walletBalance ?? this.walletBalance,
+      isAdmin: isAdmin ?? this.isAdmin,
+      isAdminVerified: isAdminVerified ?? this.isAdminVerified,
+      adminVerifiedBy: adminVerifiedBy ?? this.adminVerifiedBy,
+      adminVerifiedAt: adminVerifiedAt ?? this.adminVerifiedAt,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
   bool get isKycVerified => kycStatus == KycStatus.verified;
+
+  /// User can trade only if KYC is submitted and admin has verified
+  bool get canTrade => kycStatus == KycStatus.submitted && isAdminVerified;
 }
