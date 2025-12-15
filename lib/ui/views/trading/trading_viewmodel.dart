@@ -36,7 +36,8 @@ class TradingViewModel extends BaseViewModel {
   UserModel? get currentUser => _currentUser;
 
   // Admin users can trade without KYC
-  bool get isAdmin => _authService.isAdmin;
+  // Consider both the auth email flag and the Firestore `isAdmin` flag on the user document
+  bool get isAdmin => _authService.isAdmin || (_currentUser?.isAdmin ?? false);
   bool get isUserVerified => isAdmin || (_currentUser?.canTrade ?? false);
   bool get isVerificationPending =>
       !isAdmin &&
@@ -80,13 +81,17 @@ class TradingViewModel extends BaseViewModel {
   double _limitPrice = 0;
   double get limitPrice => _limitPrice;
 
-  double get estimatedValue => _quantity * (orderType == OrderType.market
-      ? (_stock?.currentPrice ?? 0)
-      : _limitPrice);
+  double get estimatedValue =>
+      _quantity *
+      (orderType == OrderType.market
+          ? (_stock?.currentPrice ?? 0)
+          : _limitPrice);
 
-  double get brokerage => _orderService.calculateBrokerage(estimatedValue, isBuy);
+  double get brokerage =>
+      _orderService.calculateBrokerage(estimatedValue, isBuy);
 
-  double get totalValue => isBuy ? estimatedValue + brokerage : estimatedValue - brokerage;
+  double get totalValue =>
+      isBuy ? estimatedValue + brokerage : estimatedValue - brokerage;
 
   // For buy: check quantity > 0 AND sufficient balance AND user verified
   // For sell: check quantity > 0 AND quantity <= available shares AND user verified
@@ -107,7 +112,8 @@ class TradingViewModel extends BaseViewModel {
   }
 
   // Check if user has insufficient balance for buy
-  bool get hasInsufficientBalance => isBuy && totalValue > _walletBalance && _quantity > 0;
+  bool get hasInsufficientBalance =>
+      isBuy && totalValue > _walletBalance && _quantity > 0;
 
   // Error message for invalid quantity or insufficient balance
   String? get quantityError {
@@ -237,20 +243,23 @@ class TradingViewModel extends BaseViewModel {
   // Show KYC pending message
   void showKycPendingMessage() {
     if (needsKyc) {
-      _dialogService.showDialog(
-        title: 'KYC Required',
-        description: isKycRejected
-            ? 'Your KYC was rejected. Please resubmit your KYC to start trading.'
-            : 'Please complete your KYC verification to start trading.',
-        buttonTitle: isKycRejected ? 'Resubmit KYC' : 'Complete KYC',
-      ).then((result) {
-        if (result?.confirmed ?? false) {
-          _navigationService.navigateTo(Routes.kycView);
-        }
-      });
+      _dialogService
+          .showDialog(
+            title: 'KYC Required',
+            description: isKycRejected
+                ? 'Your KYC was rejected. Please resubmit your KYC to start trading.'
+                : 'Please complete your KYC verification to start trading.',
+            buttonTitle: isKycRejected ? 'Resubmit KYC' : 'Complete KYC',
+          )
+          .then((result) {
+            if (result?.confirmed ?? false) {
+              _navigationService.navigateTo(Routes.kycView);
+            }
+          });
     } else if (isVerificationPending) {
       _snackbarService.showSnackbar(
-        message: 'Your KYC is pending admin approval. Please wait for verification.',
+        message:
+            'Your KYC is pending admin approval. Please wait for verification.',
         duration: const Duration(seconds: 3),
       );
     }
@@ -267,7 +276,8 @@ class TradingViewModel extends BaseViewModel {
 
     final confirmed = await _dialogService.showConfirmationDialog(
       title: 'Confirm ${isBuy ? 'Buy' : 'Sell'} Order',
-      description: 'Are you sure you want to ${isBuy ? 'buy' : 'sell'} $_quantity shares of $symbol at ${orderType == OrderType.market ? 'market price' : '₹${_limitPrice.toStringAsFixed(2)}'}?',
+      description:
+          'Are you sure you want to ${isBuy ? 'buy' : 'sell'} $_quantity shares of $symbol at ${orderType == OrderType.market ? 'market price' : '₹${_limitPrice.toStringAsFixed(2)}'}?',
       confirmationTitle: 'Confirm',
       cancelTitle: 'Cancel',
     );
@@ -276,7 +286,9 @@ class TradingViewModel extends BaseViewModel {
       setBusy(true);
 
       try {
-        final price = orderType == OrderType.market ? _stock!.currentPrice : _limitPrice;
+        final price = orderType == OrderType.market
+            ? _stock!.currentPrice
+            : _limitPrice;
         final userId = _authService.userId ?? 'demo_user';
 
         final order = OrderModel(

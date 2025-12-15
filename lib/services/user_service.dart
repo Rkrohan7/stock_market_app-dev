@@ -149,6 +149,10 @@ class UserService {
   Future<bool> canUserTrade(String userId) async {
     final user = await getUserById(userId);
     if (user == null) return false;
+    // Bypass KYC/trading checks for admin accounts.
+    // Admins are allowed to trade regardless of their KYC flags.
+    if (user.isAdmin) return true;
+
     return user.canTrade;
   }
 }
