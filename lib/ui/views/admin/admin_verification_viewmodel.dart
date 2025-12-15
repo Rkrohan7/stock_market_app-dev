@@ -47,6 +47,7 @@ class AdminVerificationViewModel extends BaseViewModel {
           message: 'Error loading pending users: $error',
           duration: const Duration(seconds: 3),
         );
+        print('Error loading pending users: $error');
       },
     );
   }
@@ -62,10 +63,7 @@ class AdminVerificationViewModel extends BaseViewModel {
 
     if (result?.confirmed ?? false) {
       try {
-        await _userService.verifyUser(
-          userId: user.uid,
-          adminId: adminId!,
-        );
+        await _userService.verifyUser(userId: user.uid, adminId: adminId!);
         _snackbarService.showSnackbar(
           message: '${user.displayName ?? user.email} has been verified',
           duration: const Duration(seconds: 2),

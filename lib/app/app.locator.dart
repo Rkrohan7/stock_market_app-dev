@@ -26,6 +26,9 @@ import '../services/stock_service.dart';
 import '../services/theme_service.dart';
 import '../services/user_service.dart';
 import '../services/watchlist_service.dart';
+import '../services/fund_service.dart';
+import '../services/razorpay_service.dart';
+import '../services/market_api_service.dart';
 
 final locator = StackedLocator.instance;
 
@@ -56,4 +59,7 @@ Future<void> setupLocator({
   locator.registerLazySingleton(() => ThemeService());
   locator.registerLazySingleton(() => ConnectivityService());
   locator.registerLazySingleton(() => LocalizationService());
+  locator.registerLazySingleton(() => FundService());
+  locator.registerLazySingleton(() => RazorpayService());
+  locator.registerLazySingleton(() => MarketApiService());
 }
