@@ -21,9 +21,7 @@ class UserService {
     String? email,
     String? photoUrl,
   }) async {
-    final data = <String, dynamic>{
-      'updatedAt': Timestamp.now(),
-    };
+    final data = <String, dynamic>{'updatedAt': Timestamp.now()};
 
     if (displayName != null) data['displayName'] = displayName;
     if (email != null) data['email'] = email;
@@ -93,5 +91,68 @@ class UserService {
       }
       return null;
     });
+  }
+
+  // Get all users pending admin verification (KYC submitted but not admin verified)
+  Future<List<UserModel>> getPendingVerificationUsers() async {
+    final snapshot = await _firestore
+        .collection('users')
+        .where('kycStatus', isEqualTo: KycStatus.submitted.name)
+        .where('isAdminVerified', isEqualTo: false)
+        .get();
+
+    return snapshot.docs.map((doc) => UserModel.fromJson(doc.data())).toList();
+  }
+
+  // Stream pending verification users
+  Stream<List<UserModel>> streamPendingVerificationUsers() {
+    return _firestore
+        .collection('users')
+        .where('kycStatus', isEqualTo: KycStatus.submitted.name)
+        // .where('isAdminVerified', isEqualTo: false)
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => UserModel.fromJson(doc.data()))
+              .toList(),
+        );
+  }
+
+  // Admin verify user
+  Future<void> verifyUser({
+    required String userId,
+    required String adminId,
+  }) async {
+    await _firestore.collection('users').doc(userId).update({
+      'isAdminVerified': true,
+      'adminVerifiedBy': adminId,
+      'adminVerifiedAt': Timestamp.now(),
+      'kycStatus': KycStatus.verified.name,
+      'updatedAt': Timestamp.now(),
+    });
+  }
+
+  // Admin reject user verification
+  Future<void> rejectUserVerification({
+    required String userId,
+    String? reason,
+  }) async {
+    await _firestore.collection('users').doc(userId).update({
+      'isAdminVerified': false,
+      'kycStatus': KycStatus.rejected.name,
+      'rejectionReason': reason,
+      'updatedAt': Timestamp.now(),
+    });
+  }
+
+  // Check if user can trade
+  Future<bool> canUserTrade(String userId) async {
+    final user = await getUserById(userId);
+    if (user == null) return false;
+    // Bypass KYC/trading checks for admin accounts.
+    // Admins are allowed to trade regardless of their KYC flags.
+    if (user.isAdmin) return true;
+
+    return user.canTrade;
   }
 }

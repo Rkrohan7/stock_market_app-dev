@@ -12,8 +12,10 @@ import '../services/news_service.dart';
 import '../services/education_service.dart';
 import '../services/ai_service.dart';
 import '../services/notification_service.dart';
+import '../services/alert_service.dart';
 import '../services/theme_service.dart';
 import '../services/connectivity_service.dart';
+import '../services/localization_service.dart';
 
 // Views
 import '../ui/views/startup/startup_view.dart';
@@ -31,6 +33,18 @@ import '../ui/views/ai_suggestions/ai_suggestions_view.dart';
 import '../ui/views/profile/profile_view.dart';
 import '../ui/views/search/search_view.dart';
 import '../ui/views/settings/settings_view.dart';
+import '../ui/views/blog_detail/blog_detail_view.dart';
+import '../ui/views/fund/fund_view.dart';
+import '../ui/views/fund/add_funds_view.dart';
+import '../ui/views/fund/withdraw_funds_view.dart';
+import '../ui/views/order_history/order_history_view.dart';
+import '../ui/views/help_support/help_support_view.dart';
+import '../ui/views/about/about_view.dart';
+import '../ui/views/price_alerts/price_alerts_view.dart';
+import '../ui/views/news_alerts/news_alerts_view.dart';
+import '../ui/views/privacy_policy/privacy_policy_view.dart';
+import '../ui/views/terms_of_service/terms_of_service_view.dart';
+import '../ui/views/admin/admin_verification_view.dart';
 
 @StackedApp(
   routes: [
@@ -45,10 +59,22 @@ import '../ui/views/settings/settings_view.dart';
     MaterialRoute(page: TradingView),
     MaterialRoute(page: NewsView),
     MaterialRoute(page: EducationView),
+    MaterialRoute(page: BlogDetailView),
     MaterialRoute(page: AiSuggestionsView),
     MaterialRoute(page: ProfileView),
     MaterialRoute(page: SearchView),
     MaterialRoute(page: SettingsView),
+    MaterialRoute(page: FundView),
+    MaterialRoute(page: AddFundsView),
+    MaterialRoute(page: WithdrawFundsView),
+    MaterialRoute(page: OrderHistoryView),
+    MaterialRoute(page: HelpSupportView),
+    MaterialRoute(page: AboutView),
+    MaterialRoute(page: PriceAlertsView),
+    MaterialRoute(page: NewsAlertsView),
+    MaterialRoute(page: PrivacyPolicyView),
+    MaterialRoute(page: TermsOfServiceView),
+    MaterialRoute(page: AdminVerificationView),
   ],
   dependencies: [
     // Stacked Services
@@ -68,8 +94,10 @@ import '../ui/views/settings/settings_view.dart';
     LazySingleton(classType: EducationService),
     LazySingleton(classType: AiService),
     LazySingleton(classType: NotificationService),
+    LazySingleton(classType: AlertService),
     LazySingleton(classType: ThemeService),
     LazySingleton(classType: ConnectivityService),
+    LazySingleton(classType: LocalizationService),
   ],
   bottomsheets: [
     // Add bottom sheets here

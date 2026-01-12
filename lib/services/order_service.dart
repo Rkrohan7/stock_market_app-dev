@@ -2,12 +2,29 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../data/models/order_model.dart';
 import '../data/models/portfolio_model.dart';
 import '../core/enums/enums.dart';
+import 'fund_service.dart';
 
 class OrderService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FundService _fundService = FundService();
 
   // Place new order
   Future<String> placeOrder(OrderModel order) async {
+    // Calculate total cost including charges
+    final charges = calculateCharges(order.totalValue, order.isBuy);
+    final totalCost = order.isBuy
+        ? order.totalValue + (charges['totalCharges'] ?? 0)
+        : order.totalValue - (charges['totalCharges'] ?? 0);
+
+    // For buy orders, check if user has sufficient balance
+    if (order.isBuy) {
+      final currentBalance = await _fundService.getWalletBalance(order.odersId);
+      if (currentBalance < totalCost) {
+        throw Exception(
+            'Insufficient balance. You need ₹${totalCost.toStringAsFixed(2)} but have ₹${currentBalance.toStringAsFixed(2)}. Please add funds first.');
+      }
+    }
+
     final docRef = await _firestore.collection('orders').add(order.toJson());
 
     // Simulate order execution for demo
@@ -28,7 +45,32 @@ class OrderService {
     // Update portfolio based on order type (buy/sell)
     await _updatePortfolio(order);
 
+    // Update wallet balance
+    await _updateWalletBalance(order);
+
     return docRef.id;
+  }
+
+  // Update wallet balance after order execution
+  Future<void> _updateWalletBalance(OrderModel order) async {
+    final charges = calculateCharges(order.totalValue, order.isBuy);
+    final totalCharges = charges['totalCharges'] ?? 0;
+
+    if (order.isBuy) {
+      // Deduct from wallet for buy orders
+      final totalDeduction = order.totalValue + totalCharges;
+      await _firestore.collection('users').doc(order.odersId).update({
+        'walletBalance': FieldValue.increment(-totalDeduction),
+        'updatedAt': Timestamp.now(),
+      });
+    } else {
+      // Add to wallet for sell orders (minus charges)
+      final totalCredit = order.totalValue - totalCharges;
+      await _firestore.collection('users').doc(order.odersId).update({
+        'walletBalance': FieldValue.increment(totalCredit),
+        'updatedAt': Timestamp.now(),
+      });
+    }
   }
 
   // Update portfolio after order execution

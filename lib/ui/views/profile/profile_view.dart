@@ -3,16 +3,21 @@ import 'package:stacked/stacked.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/enums/enums.dart';
+import '../../../l10n/app_localizations.dart';
 import 'profile_viewmodel.dart';
 
 class ProfileView extends StackedView<ProfileViewModel> {
   const ProfileView({super.key});
 
   @override
-  Widget builder(BuildContext context, ProfileViewModel viewModel, Widget? child) {
+  Widget builder(
+    BuildContext context,
+    ProfileViewModel viewModel,
+    Widget? child,
+  ) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: Text(AppLocalizations.of(context)!.profile),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings_outlined),
@@ -83,7 +88,10 @@ class ProfileView extends StackedView<ProfileViewModel> {
                 ),
                 const SizedBox(height: 8),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(4),
@@ -100,22 +108,28 @@ class ProfileView extends StackedView<ProfileViewModel> {
               ],
             ),
           ),
-          IconButton(
-            icon: const Icon(Icons.edit_outlined, color: Colors.white),
-            onPressed: () {},
-          ),
         ],
       ),
     ).animate().fadeIn().scale(begin: const Offset(0.95, 0.95));
   }
 
   Widget _buildQuickActions(BuildContext context, ProfileViewModel viewModel) {
+    final l10n = AppLocalizations.of(context)!;
     return Row(
       children: [
         Expanded(
           child: _buildQuickActionCard(
             context,
-            'Orders',
+            l10n.funds,
+            Icons.account_balance_wallet_outlined,
+            viewModel.openFunds,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: _buildQuickActionCard(
+            context,
+            l10n.orders,
             Icons.receipt_long_outlined,
             viewModel.openOrderHistory,
           ),
@@ -124,16 +138,7 @@ class ProfileView extends StackedView<ProfileViewModel> {
         Expanded(
           child: _buildQuickActionCard(
             context,
-            'Alerts',
-            Icons.notifications_outlined,
-            viewModel.openAlerts,
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: _buildQuickActionCard(
-            context,
-            'KYC',
+            l10n.kyc,
             Icons.verified_user_outlined,
             viewModel.openKyc,
           ),
@@ -161,10 +166,7 @@ class ProfileView extends StackedView<ProfileViewModel> {
           children: [
             Icon(icon, color: AppColors.primary),
             const SizedBox(height: 8),
-            Text(
-              label,
-              style: const TextStyle(fontWeight: FontWeight.w500),
-            ),
+            Text(label, style: const TextStyle(fontWeight: FontWeight.w500)),
           ],
         ),
       ),
@@ -172,6 +174,7 @@ class ProfileView extends StackedView<ProfileViewModel> {
   }
 
   Widget _buildMenuSection(BuildContext context, ProfileViewModel viewModel) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
@@ -179,9 +182,20 @@ class ProfileView extends StackedView<ProfileViewModel> {
       ),
       child: Column(
         children: [
+          // Admin Panel option - only shown for admin users
+          if (viewModel.isAdmin) ...[
+            _buildMenuItem(
+              context,
+              'Admin Panel',
+              Icons.admin_panel_settings,
+              onTap: viewModel.openAdminPanel,
+              iconColor: AppColors.warning,
+            ),
+            _buildDivider(),
+          ],
           _buildMenuItem(
             context,
-            'Dark Mode',
+            l10n.darkMode,
             Icons.dark_mode_outlined,
             trailing: Switch(
               value: viewModel.isDarkMode,
@@ -193,28 +207,14 @@ class ProfileView extends StackedView<ProfileViewModel> {
           _buildDivider(),
           _buildMenuItem(
             context,
-            'Notifications',
-            Icons.notifications_outlined,
-            onTap: () {},
-          ),
-          _buildDivider(),
-          _buildMenuItem(
-            context,
-            'Security',
-            Icons.security_outlined,
-            onTap: () {},
-          ),
-          _buildDivider(),
-          _buildMenuItem(
-            context,
-            'Help & Support',
+            l10n.helpSupport,
             Icons.help_outline_rounded,
             onTap: viewModel.openSupport,
           ),
           _buildDivider(),
           _buildMenuItem(
             context,
-            'About',
+            l10n.about,
             Icons.info_outline_rounded,
             onTap: viewModel.openAbout,
           ),
@@ -229,6 +229,7 @@ class ProfileView extends StackedView<ProfileViewModel> {
     IconData icon, {
     VoidCallback? onTap,
     Widget? trailing,
+    Color? iconColor,
   }) {
     return InkWell(
       onTap: onTap,
@@ -236,14 +237,9 @@ class ProfileView extends StackedView<ProfileViewModel> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         child: Row(
           children: [
-            Icon(icon, color: AppColors.primary, size: 22),
+            Icon(icon, color: iconColor ?? AppColors.primary, size: 22),
             const SizedBox(width: 16),
-            Expanded(
-              child: Text(
-                title,
-                style: const TextStyle(fontSize: 15),
-              ),
-            ),
+            Expanded(child: Text(title, style: const TextStyle(fontSize: 15))),
             trailing ??
                 Icon(
                   Icons.arrow_forward_ios,
@@ -270,9 +266,9 @@ class ProfileView extends StackedView<ProfileViewModel> {
       child: OutlinedButton.icon(
         onPressed: viewModel.logout,
         icon: const Icon(Icons.logout_rounded, color: AppColors.error),
-        label: const Text(
-          'Logout',
-          style: TextStyle(color: AppColors.error),
+        label: Text(
+          AppLocalizations.of(context)!.logout,
+          style: const TextStyle(color: AppColors.error),
         ),
         style: OutlinedButton.styleFrom(
           side: const BorderSide(color: AppColors.error),

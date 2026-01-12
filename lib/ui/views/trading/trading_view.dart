@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/enums/enums.dart';
+import '../../../app/app.router.dart';
 import 'trading_viewmodel.dart';
 import 'order_success_view.dart';
 
@@ -47,6 +48,15 @@ class TradingView extends StackedView<TradingViewModel> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Show KYC status banners
+                  if (viewModel.needsKyc)
+                    _buildKycRequiredBanner(context, viewModel),
+                  if (viewModel.needsKyc)
+                    const SizedBox(height: 16),
+                  if (viewModel.isVerificationPending && !viewModel.needsKyc)
+                    _buildVerificationPendingBanner(context),
+                  if (viewModel.isVerificationPending && !viewModel.needsKyc)
+                    const SizedBox(height: 16),
                   _buildStockInfo(context, viewModel, actionColor),
                   const SizedBox(height: 24),
                   _buildOrderTypeSelector(context, viewModel),
@@ -65,6 +75,132 @@ class TradingView extends StackedView<TradingViewModel> {
             ),
       bottomNavigationBar: _buildBottomBar(context, viewModel, actionColor),
     );
+  }
+
+  Widget _buildVerificationPendingBanner(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.warning.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.warning.withValues(alpha: 0.3)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: AppColors.warning.withValues(alpha: 0.2),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.hourglass_empty,
+              color: AppColors.warning,
+              size: 24,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Verification Pending',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.warning,
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Your KYC is under admin review. You cannot trade until verified.',
+                  style: TextStyle(
+                    color: AppColors.textSecondaryLight,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ).animate().fadeIn().shake(delay: 200.ms, duration: 500.ms);
+  }
+
+  Widget _buildKycRequiredBanner(BuildContext context, TradingViewModel viewModel) {
+    final isRejected = viewModel.isKycRejected;
+    final bannerColor = isRejected ? AppColors.error : AppColors.warning;
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: bannerColor.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: bannerColor.withValues(alpha: 0.3)),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: bannerColor.withValues(alpha: 0.2),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  isRejected ? Icons.error_outline : Icons.warning_amber_rounded,
+                  color: bannerColor,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      isRejected ? 'KYC Rejected' : 'KYC Required',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: bannerColor,
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      isRejected
+                          ? 'Your KYC was rejected. Please resubmit to start trading.'
+                          : 'Please complete your KYC verification to start trading.',
+                      style: TextStyle(
+                        color: AppColors.textSecondaryLight,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, Routes.kycView);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: bannerColor,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+              ),
+              child: Text(isRejected ? 'Resubmit KYC' : 'Complete KYC'),
+            ),
+          ),
+        ],
+      ),
+    ).animate().fadeIn().shake(delay: 200.ms, duration: 500.ms);
   }
 
   Widget _buildStockInfo(BuildContext context, TradingViewModel viewModel, Color actionColor) {
@@ -276,6 +412,23 @@ class TradingView extends StackedView<TradingViewModel> {
                     fontWeight: FontWeight.bold,
                   ),
             ),
+            // Show wallet balance for buy orders
+            if (isBuy)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  'Balance: ₹${viewModel.walletBalance.toStringAsFixed(2)}',
+                  style: TextStyle(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
             // Show available shares for sell orders
             if (!isBuy)
               Container(
@@ -352,6 +505,25 @@ class TradingView extends StackedView<TradingViewModel> {
               ),
             ],
           ),
+          // Show Add Funds button for insufficient balance
+          if (viewModel.hasInsufficientBalance) ...[
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: () {
+                  Navigator.pushNamed(context, Routes.addFundsView);
+                },
+                icon: const Icon(Icons.add_circle_outline),
+                label: const Text('Add Funds'),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: AppColors.primary,
+                  side: BorderSide(color: AppColors.primary),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+              ),
+            ),
+          ],
         ],
         // Quick select buttons for sell
         if (!isBuy && viewModel.availableQuantity > 0) ...[
@@ -506,6 +678,9 @@ class TradingView extends StackedView<TradingViewModel> {
   }
 
   Widget _buildBottomBar(BuildContext context, TradingViewModel viewModel, Color actionColor) {
+    // Determine if button should be clickable for KYC message
+    final bool canShowKycMessage = !viewModel.isUserVerified && viewModel.quantity > 0;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -522,9 +697,11 @@ class TradingView extends StackedView<TradingViewModel> {
         width: double.infinity,
         height: 56,
         child: ElevatedButton(
-          onPressed: viewModel.canPlaceOrder && !viewModel.isBusy
-              ? viewModel.placeOrder
-              : null,
+          onPressed: viewModel.isBusy
+              ? null
+              : (viewModel.canPlaceOrder
+                  ? viewModel.placeOrder
+                  : (canShowKycMessage ? viewModel.showKycPendingMessage : null)),
           style: ElevatedButton.styleFrom(
             backgroundColor: actionColor,
             disabledBackgroundColor: actionColor.withValues(alpha: 0.5),

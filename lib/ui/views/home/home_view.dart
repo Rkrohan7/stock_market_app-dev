@@ -3,6 +3,7 @@ import 'package:stacked/stacked.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/constants/asset_paths.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../widgets/common/market_index_card.dart';
 import '../../widgets/common/stock_card.dart';
 import '../../widgets/common/section_header.dart';
@@ -78,7 +79,7 @@ class HomeView extends StackedView<HomeViewModel> {
 
                           // Top Gainers
                           SectionHeader(
-                            title: 'Top Gainers',
+                            title: AppLocalizations.of(context)!.topGainers,
                             onViewAll: () => viewModel.navigateToMarket('gainers'),
                           ),
                           const SizedBox(height: 12),
@@ -87,7 +88,7 @@ class HomeView extends StackedView<HomeViewModel> {
 
                           // Top Losers
                           SectionHeader(
-                            title: 'Top Losers',
+                            title: AppLocalizations.of(context)!.topLosers,
                             onViewAll: () => viewModel.navigateToMarket('losers'),
                           ),
                           const SizedBox(height: 12),
@@ -96,7 +97,7 @@ class HomeView extends StackedView<HomeViewModel> {
 
                           // Most Active
                           SectionHeader(
-                            title: 'Most Active',
+                            title: AppLocalizations.of(context)!.mostActive,
                             onViewAll: () => viewModel.navigateToMarket('active'),
                           ),
                           const SizedBox(height: 12),
@@ -176,9 +177,9 @@ class HomeView extends StackedView<HomeViewModel> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Portfolio Value',
-                style: TextStyle(
+              Text(
+                AppLocalizations.of(context)!.portfolioValue,
+                style: const TextStyle(
                   color: Colors.white70,
                   fontSize: 14,
                 ),
@@ -226,7 +227,7 @@ class HomeView extends StackedView<HomeViewModel> {
             children: [
               Expanded(
                 child: _buildPnLItem(
-                  'Today\'s P&L',
+                  AppLocalizations.of(context)!.todayPnL,
                   viewModel.todayPnL,
                   viewModel.todayPnLPercent,
                 ),
@@ -238,7 +239,7 @@ class HomeView extends StackedView<HomeViewModel> {
               ),
               Expanded(
                 child: _buildPnLItem(
-                  'Total P&L',
+                  AppLocalizations.of(context)!.totalPnL,
                   viewModel.totalPnL,
                   viewModel.totalPnLPercent,
                 ),
@@ -279,15 +280,16 @@ class HomeView extends StackedView<HomeViewModel> {
   }
 
   Widget _buildQuickActions(BuildContext context, HomeViewModel viewModel) {
+    final l10n = AppLocalizations.of(context)!;
     final actions = [
-      {'icon': AppIcons.buy, 'label': 'Buy', 'onTap': viewModel.openBuy},
-      {'icon': AppIcons.sell, 'label': 'Sell', 'onTap': viewModel.openSell},
-      {'icon': AppIcons.portfolio, 'label': 'Portfolio', 'onTap': viewModel.openPortfolio},
-      {'icon': AppIcons.watchlist, 'label': 'Watchlist', 'onTap': viewModel.openWatchlist},
-      {'icon': AppIcons.news, 'label': 'News', 'onTap': viewModel.openNews},
-      {'icon': AppIcons.education, 'label': 'Learn', 'onTap': viewModel.openEducation},
-      {'icon': AppIcons.ai, 'label': 'AI Tips', 'onTap': viewModel.openAiSuggestions},
-      {'icon': AppIcons.analytics, 'label': 'Analysis', 'onTap': viewModel.openAnalysis},
+      {'icon': AppIcons.buy, 'label': l10n.buy, 'onTap': viewModel.openBuy},
+      {'icon': AppIcons.sell, 'label': l10n.sell, 'onTap': viewModel.openSell},
+      {'icon': AppIcons.portfolio, 'label': l10n.portfolio, 'onTap': viewModel.openPortfolio},
+      {'icon': Icons.account_balance_wallet, 'label': l10n.funds, 'onTap': viewModel.openFunds},
+      {'icon': AppIcons.watchlist, 'label': l10n.watchlist, 'onTap': viewModel.openWatchlist},
+      {'icon': AppIcons.news, 'label': l10n.news, 'onTap': viewModel.openNews},
+      {'icon': AppIcons.education, 'label': l10n.learn, 'onTap': viewModel.openEducation},
+      {'icon': AppIcons.ai, 'label': l10n.aiTips, 'onTap': viewModel.openAiSuggestions},
     ];
 
     return GridView.builder(
@@ -334,6 +336,7 @@ class HomeView extends StackedView<HomeViewModel> {
   }
 
   Widget _buildBottomNav(BuildContext context, HomeViewModel viewModel) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
@@ -353,31 +356,31 @@ class HomeView extends StackedView<HomeViewModel> {
             children: [
               _NavItem(
                 icon: AppIcons.home,
-                label: 'Home',
+                label: l10n.home,
                 isSelected: viewModel.currentIndex == 0,
                 onTap: () => viewModel.setIndex(0),
               ),
               _NavItem(
                 icon: AppIcons.market,
-                label: 'Market',
+                label: l10n.market,
                 isSelected: viewModel.currentIndex == 1,
                 onTap: () => viewModel.setIndex(1),
               ),
               _NavItem(
                 icon: AppIcons.portfolio,
-                label: 'Portfolio',
+                label: l10n.portfolio,
                 isSelected: viewModel.currentIndex == 2,
                 onTap: () => viewModel.setIndex(2),
               ),
               _NavItem(
                 icon: AppIcons.watchlist,
-                label: 'Watchlist',
+                label: l10n.watchlist,
                 isSelected: viewModel.currentIndex == 3,
                 onTap: () => viewModel.setIndex(3),
               ),
               _NavItem(
                 icon: AppIcons.profile,
-                label: 'Profile',
+                label: l10n.profile,
                 isSelected: viewModel.currentIndex == 4,
                 onTap: () => viewModel.setIndex(4),
               ),

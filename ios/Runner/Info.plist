@@ -45,5 +45,25 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- Face ID / Touch ID usage description for biometric authentication -->
+	<key>NSFaceIDUsageDescription</key>
+	<string>We use Face ID to securely authenticate you and protect your trading account.</string>
+	<!-- Firebase Cloud Messaging -->
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
+	<!-- Razorpay UPI app schemes for iOS -->
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>upi</string>
+		<string>gpay</string>
+		<string>phonepe</string>
+		<string>paytm</string>
+		<string>bhim</string>
+	</array>
 </dict>
 </plist>
