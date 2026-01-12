@@ -77,7 +77,7 @@ class OrderHistoryView extends StackedView<OrderHistoryViewModel> {
                 labelStyle: TextStyle(
                   color: isSelected
                       ? AppColors.primary
-                      : const Color.fromARGB(255, 0, 0, 0),
+                      : AppColors.textPrimaryLight,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                 ),
               ),
