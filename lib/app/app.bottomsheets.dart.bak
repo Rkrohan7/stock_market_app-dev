@@ -1,22 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
-// StackedDialogGenerator
+// StackedBottomsheetGenerator
 // **************************************************************************
 
 import 'package:stacked_services/stacked_services.dart';
 
 import 'app.locator.dart';
 
-enum DialogType{
-  placeholder,
+enum BottomSheetType{
 }
-void setupDialogUi() {
-  final dialogService = locator<DialogService>();
+void setupBottomSheetUi() {
+  final bottomsheetService = locator<BottomSheetService>();
 
-  final Map<DialogType, DialogBuilder> builders = {
+  final Map<BottomSheetType, SheetBuilder> builders = {
   
   };
 
-  dialogService.registerCustomDialogBuilders(builders);
+  bottomsheetService.setCustomSheetBuilders(builders);
 }

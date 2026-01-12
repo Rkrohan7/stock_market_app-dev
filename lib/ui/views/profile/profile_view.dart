@@ -96,9 +96,9 @@ class ProfileView extends StackedView<ProfileViewModel> {
                     color: Colors.white.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(4),
                   ),
-                  child: Text(
-                    viewModel.user?.kycStatus.displayName ?? 'KYC Pending',
-                    style: const TextStyle(
+                  child: const Text(
+                    'Learning Mode',
+                    style: TextStyle(
                       color: Colors.white,
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
@@ -138,9 +138,9 @@ class ProfileView extends StackedView<ProfileViewModel> {
         Expanded(
           child: _buildQuickActionCard(
             context,
-            l10n.kyc,
-            Icons.verified_user_outlined,
-            viewModel.openKyc,
+            l10n.settings,
+            Icons.settings_outlined,
+            viewModel.openSettings,
           ),
         ),
       ],
@@ -182,17 +182,6 @@ class ProfileView extends StackedView<ProfileViewModel> {
       ),
       child: Column(
         children: [
-          // Admin Panel option - only shown for admin users
-          if (viewModel.isAdmin) ...[
-            _buildMenuItem(
-              context,
-              'Admin Panel',
-              Icons.admin_panel_settings,
-              onTap: viewModel.openAdminPanel,
-              iconColor: AppColors.warning,
-            ),
-            _buildDivider(),
-          ],
           _buildMenuItem(
             context,
             l10n.darkMode,

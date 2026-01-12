@@ -35,21 +35,15 @@ class TradingViewModel extends BaseViewModel {
   UserModel? _currentUser;
   UserModel? get currentUser => _currentUser;
 
-  // Admin users can trade without KYC
-  // Consider both the auth email flag and the Firestore `isAdmin` flag on the user document
-  bool get isAdmin => _authService.isAdmin || (_currentUser?.isAdmin ?? false);
-  bool get isUserVerified => isAdmin || (_currentUser?.canTrade ?? false);
-  bool get isVerificationPending =>
-      !isAdmin &&
-      _currentUser != null &&
-      _currentUser!.kycStatus == KycStatus.submitted &&
-      !_currentUser!.isAdminVerified;
+  // All users can now trade
+  bool get isUserVerified => true;
+  bool get isVerificationPending => false;
 
-  // Check if KYC needs to be completed (not for admin)
-  bool get needsKyc => !isAdmin && (_currentUser?.needsKyc ?? true);
+  // KYC is now optional
+  bool get needsKyc => false;
 
   // Check if KYC is rejected
-  bool get isKycRejected => !isAdmin && (_currentUser?.isKycRejected ?? false);
+  bool get isKycRejected => false;
 
   final quantityController = TextEditingController();
   final priceController = TextEditingController();
@@ -240,23 +234,10 @@ class TradingViewModel extends BaseViewModel {
   String _orderId = '';
   String get orderId => _orderId;
 
-  // Show KYC pending message
+  // Show verification message (not applicable in learning mode)
   void showKycPendingMessage() {
-    if (needsKyc) {
-      _dialogService
-          .showDialog(
-            title: 'KYC Required',
-            description: isKycRejected
-                ? 'Your KYC was rejected. Please resubmit your KYC to start trading.'
-                : 'Please complete your KYC verification to start trading.',
-            buttonTitle: isKycRejected ? 'Resubmit KYC' : 'Complete KYC',
-          )
-          .then((result) {
-            if (result?.confirmed ?? false) {
-              _navigationService.navigateTo(Routes.kycView);
-            }
-          });
-    } else if (isVerificationPending) {
+    // In learning mode, all users can trade immediately
+    if (isVerificationPending) {
       _snackbarService.showSnackbar(
         message:
             'Your KYC is pending admin approval. Please wait for verification.',

@@ -6,13 +6,13 @@ import '../../../services/auth_service.dart';
 import '../../../services/stock_service.dart';
 import '../../../services/portfolio_service.dart';
 import '../../../data/models/stock_model.dart';
+import '../../../data/models/portfolio_model.dart';
 import '../../../core/utils/helpers.dart';
 
 class HomeViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final _authService = locator<AuthService>();
   final _stockService = locator<StockService>();
-  // ignore: unused_field
   final _portfolioService = locator<PortfolioService>();
 
   int _currentIndex = 0;
@@ -39,21 +39,33 @@ class HomeViewModel extends BaseViewModel {
   List<StockModel> get mostActive => _mostActive;
 
   // Portfolio data
-  double get portfolioValue => 125750.50; // Demo
-  double get todayPnL => 1250.30; // Demo
-  double get todayPnLPercent => 1.02; // Demo
-  double get totalPnL => 15750.80; // Demo
-  double get totalPnLPercent => 12.5; // Demo
+  PortfolioModel? _portfolio;
+  PortfolioModel? get portfolio => _portfolio;
+
+  double get portfolioValue => _portfolio?.currentValue ?? 0;
+  double get todayPnL => _portfolio?.todayProfitLoss ?? 0;
+  double get todayPnLPercent => _portfolio?.todayProfitLossPercent ?? 0;
+  double get totalPnL => _portfolio?.totalProfitLoss ?? 0;
+  double get totalPnLPercent => _portfolio?.totalProfitLossPercent ?? 0;
 
   Future<void> initialize() async {
     setBusy(true);
     await Future.wait([
+      _loadPortfolio(),
       _loadIndices(),
       _loadTopGainers(),
       _loadTopLosers(),
       _loadMostActive(),
     ]);
     setBusy(false);
+  }
+
+  Future<void> _loadPortfolio() async {
+    final userId = _authService.userId;
+    if (userId != null) {
+      _portfolio = await _portfolioService.getPortfolio(userId);
+      notifyListeners();
+    }
   }
 
   Future<void> refreshData() async {

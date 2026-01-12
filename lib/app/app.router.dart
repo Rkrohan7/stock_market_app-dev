@@ -5,59 +5,54 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i29;
+import 'package:flutter/material.dart' as _i27;
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i31;
-import 'package:stock_trading_app/data/models/education_model.dart' as _i30;
-import 'package:stock_trading_app/ui/views/about/about_view.dart' as _i23;
-import 'package:stock_trading_app/ui/views/admin/admin_verification_view.dart'
-    as _i28;
+import 'package:stacked_services/stacked_services.dart' as _i29;
+import 'package:stock_trading_app/data/models/education_model.dart' as _i28;
+import 'package:stock_trading_app/ui/views/about/about_view.dart' as _i22;
 import 'package:stock_trading_app/ui/views/ai_suggestions/ai_suggestions_view.dart'
-    as _i14;
-import 'package:stock_trading_app/ui/views/auth/kyc_view.dart' as _i4;
+    as _i13;
 import 'package:stock_trading_app/ui/views/auth/login_view.dart' as _i3;
 import 'package:stock_trading_app/ui/views/blog_detail/blog_detail_view.dart'
-    as _i13;
-import 'package:stock_trading_app/ui/views/education/education_view.dart'
     as _i12;
-import 'package:stock_trading_app/ui/views/fund/add_funds_view.dart' as _i19;
-import 'package:stock_trading_app/ui/views/fund/fund_view.dart' as _i18;
+import 'package:stock_trading_app/ui/views/education/education_view.dart'
+    as _i11;
+import 'package:stock_trading_app/ui/views/fund/add_funds_view.dart' as _i18;
+import 'package:stock_trading_app/ui/views/fund/fund_view.dart' as _i17;
 import 'package:stock_trading_app/ui/views/fund/withdraw_funds_view.dart'
-    as _i20;
+    as _i19;
 import 'package:stock_trading_app/ui/views/help_support/help_support_view.dart'
-    as _i22;
-import 'package:stock_trading_app/ui/views/home/home_view.dart' as _i5;
-import 'package:stock_trading_app/ui/views/market/market_view.dart' as _i6;
-import 'package:stock_trading_app/ui/views/news/news_view.dart' as _i11;
-import 'package:stock_trading_app/ui/views/news_alerts/news_alerts_view.dart'
-    as _i25;
-import 'package:stock_trading_app/ui/views/order_history/order_history_view.dart'
     as _i21;
-import 'package:stock_trading_app/ui/views/portfolio/portfolio_view.dart'
-    as _i7;
-import 'package:stock_trading_app/ui/views/price_alerts/price_alerts_view.dart'
+import 'package:stock_trading_app/ui/views/home/home_view.dart' as _i4;
+import 'package:stock_trading_app/ui/views/market/market_view.dart' as _i5;
+import 'package:stock_trading_app/ui/views/news/news_view.dart' as _i10;
+import 'package:stock_trading_app/ui/views/news_alerts/news_alerts_view.dart'
     as _i24;
+import 'package:stock_trading_app/ui/views/order_history/order_history_view.dart'
+    as _i20;
+import 'package:stock_trading_app/ui/views/portfolio/portfolio_view.dart'
+    as _i6;
+import 'package:stock_trading_app/ui/views/price_alerts/price_alerts_view.dart'
+    as _i23;
 import 'package:stock_trading_app/ui/views/privacy_policy/privacy_policy_view.dart'
-    as _i26;
-import 'package:stock_trading_app/ui/views/profile/profile_view.dart' as _i15;
-import 'package:stock_trading_app/ui/views/search/search_view.dart' as _i16;
-import 'package:stock_trading_app/ui/views/settings/settings_view.dart' as _i17;
+    as _i25;
+import 'package:stock_trading_app/ui/views/profile/profile_view.dart' as _i14;
+import 'package:stock_trading_app/ui/views/search/search_view.dart' as _i15;
+import 'package:stock_trading_app/ui/views/settings/settings_view.dart' as _i16;
 import 'package:stock_trading_app/ui/views/startup/startup_view.dart' as _i2;
 import 'package:stock_trading_app/ui/views/stock_details/stock_details_view.dart'
-    as _i9;
-import 'package:stock_trading_app/ui/views/terms_of_service/terms_of_service_view.dart'
-    as _i27;
-import 'package:stock_trading_app/ui/views/trading/trading_view.dart' as _i10;
-import 'package:stock_trading_app/ui/views/watchlist/watchlist_view.dart'
     as _i8;
+import 'package:stock_trading_app/ui/views/terms_of_service/terms_of_service_view.dart'
+    as _i26;
+import 'package:stock_trading_app/ui/views/trading/trading_view.dart' as _i9;
+import 'package:stock_trading_app/ui/views/watchlist/watchlist_view.dart'
+    as _i7;
 
 class Routes {
   static const startupView = '/';
 
   static const loginView = '/login-view';
-
-  static const kycView = '/kyc-view';
 
   static const homeView = '/home-view';
 
@@ -105,12 +100,9 @@ class Routes {
 
   static const termsOfServiceView = '/terms-of-service-view';
 
-  static const adminVerificationView = '/admin-verification-view';
-
   static const all = <String>{
     startupView,
     loginView,
-    kycView,
     homeView,
     marketView,
     portfolioView,
@@ -134,7 +126,6 @@ class Routes {
     newsAlertsView,
     privacyPolicyView,
     termsOfServiceView,
-    adminVerificationView,
   };
 }
 
@@ -149,273 +140,253 @@ class StackedRouter extends _i1.RouterBase {
       page: _i3.LoginView,
     ),
     _i1.RouteDef(
-      Routes.kycView,
-      page: _i4.KycView,
-    ),
-    _i1.RouteDef(
       Routes.homeView,
-      page: _i5.HomeView,
+      page: _i4.HomeView,
     ),
     _i1.RouteDef(
       Routes.marketView,
-      page: _i6.MarketView,
+      page: _i5.MarketView,
     ),
     _i1.RouteDef(
       Routes.portfolioView,
-      page: _i7.PortfolioView,
+      page: _i6.PortfolioView,
     ),
     _i1.RouteDef(
       Routes.watchlistView,
-      page: _i8.WatchlistView,
+      page: _i7.WatchlistView,
     ),
     _i1.RouteDef(
       Routes.stockDetailsView,
-      page: _i9.StockDetailsView,
+      page: _i8.StockDetailsView,
     ),
     _i1.RouteDef(
       Routes.tradingView,
-      page: _i10.TradingView,
+      page: _i9.TradingView,
     ),
     _i1.RouteDef(
       Routes.newsView,
-      page: _i11.NewsView,
+      page: _i10.NewsView,
     ),
     _i1.RouteDef(
       Routes.educationView,
-      page: _i12.EducationView,
+      page: _i11.EducationView,
     ),
     _i1.RouteDef(
       Routes.blogDetailView,
-      page: _i13.BlogDetailView,
+      page: _i12.BlogDetailView,
     ),
     _i1.RouteDef(
       Routes.aiSuggestionsView,
-      page: _i14.AiSuggestionsView,
+      page: _i13.AiSuggestionsView,
     ),
     _i1.RouteDef(
       Routes.profileView,
-      page: _i15.ProfileView,
+      page: _i14.ProfileView,
     ),
     _i1.RouteDef(
       Routes.searchView,
-      page: _i16.SearchView,
+      page: _i15.SearchView,
     ),
     _i1.RouteDef(
       Routes.settingsView,
-      page: _i17.SettingsView,
+      page: _i16.SettingsView,
     ),
     _i1.RouteDef(
       Routes.fundView,
-      page: _i18.FundView,
+      page: _i17.FundView,
     ),
     _i1.RouteDef(
       Routes.addFundsView,
-      page: _i19.AddFundsView,
+      page: _i18.AddFundsView,
     ),
     _i1.RouteDef(
       Routes.withdrawFundsView,
-      page: _i20.WithdrawFundsView,
+      page: _i19.WithdrawFundsView,
     ),
     _i1.RouteDef(
       Routes.orderHistoryView,
-      page: _i21.OrderHistoryView,
+      page: _i20.OrderHistoryView,
     ),
     _i1.RouteDef(
       Routes.helpSupportView,
-      page: _i22.HelpSupportView,
+      page: _i21.HelpSupportView,
     ),
     _i1.RouteDef(
       Routes.aboutView,
-      page: _i23.AboutView,
+      page: _i22.AboutView,
     ),
     _i1.RouteDef(
       Routes.priceAlertsView,
-      page: _i24.PriceAlertsView,
+      page: _i23.PriceAlertsView,
     ),
     _i1.RouteDef(
       Routes.newsAlertsView,
-      page: _i25.NewsAlertsView,
+      page: _i24.NewsAlertsView,
     ),
     _i1.RouteDef(
       Routes.privacyPolicyView,
-      page: _i26.PrivacyPolicyView,
+      page: _i25.PrivacyPolicyView,
     ),
     _i1.RouteDef(
       Routes.termsOfServiceView,
-      page: _i27.TermsOfServiceView,
-    ),
-    _i1.RouteDef(
-      Routes.adminVerificationView,
-      page: _i28.AdminVerificationView,
+      page: _i26.TermsOfServiceView,
     ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.StartupView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => const _i2.StartupView(),
         settings: data,
       );
     },
     _i3.LoginView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => const _i3.LoginView(),
         settings: data,
       );
     },
-    _i4.KycView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i4.KycView(),
+    _i4.HomeView: (data) {
+      return _i27.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i4.HomeView(),
         settings: data,
       );
     },
-    _i5.HomeView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i5.HomeView(),
+    _i5.MarketView: (data) {
+      return _i27.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i5.MarketView(),
         settings: data,
       );
     },
-    _i6.MarketView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i6.MarketView(),
+    _i6.PortfolioView: (data) {
+      return _i27.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i6.PortfolioView(),
         settings: data,
       );
     },
-    _i7.PortfolioView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i7.PortfolioView(),
+    _i7.WatchlistView: (data) {
+      return _i27.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i7.WatchlistView(),
         settings: data,
       );
     },
-    _i8.WatchlistView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i8.WatchlistView(),
-        settings: data,
-      );
-    },
-    _i9.StockDetailsView: (data) {
+    _i8.StockDetailsView: (data) {
       final args = data.getArgs<StockDetailsViewArguments>(nullOk: false);
-      return _i29.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) =>
-            _i9.StockDetailsView(key: args.key, symbol: args.symbol),
+            _i8.StockDetailsView(key: args.key, symbol: args.symbol),
         settings: data,
       );
     },
-    _i10.TradingView: (data) {
+    _i9.TradingView: (data) {
       final args = data.getArgs<TradingViewArguments>(nullOk: false);
-      return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => _i10.TradingView(
+      return _i27.MaterialPageRoute<dynamic>(
+        builder: (context) => _i9.TradingView(
             key: args.key, symbol: args.symbol, isBuy: args.isBuy),
         settings: data,
       );
     },
-    _i11.NewsView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i11.NewsView(),
+    _i10.NewsView: (data) {
+      return _i27.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i10.NewsView(),
         settings: data,
       );
     },
-    _i12.EducationView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i12.EducationView(),
+    _i11.EducationView: (data) {
+      return _i27.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i11.EducationView(),
         settings: data,
       );
     },
-    _i13.BlogDetailView: (data) {
+    _i12.BlogDetailView: (data) {
       final args = data.getArgs<BlogDetailViewArguments>(nullOk: false);
-      return _i29.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) =>
-            _i13.BlogDetailView(key: args.key, blog: args.blog),
+            _i12.BlogDetailView(key: args.key, blog: args.blog),
         settings: data,
       );
     },
-    _i14.AiSuggestionsView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i14.AiSuggestionsView(),
+    _i13.AiSuggestionsView: (data) {
+      return _i27.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i13.AiSuggestionsView(),
         settings: data,
       );
     },
-    _i15.ProfileView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i15.ProfileView(),
+    _i14.ProfileView: (data) {
+      return _i27.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i14.ProfileView(),
         settings: data,
       );
     },
-    _i16.SearchView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i16.SearchView(),
+    _i15.SearchView: (data) {
+      return _i27.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i15.SearchView(),
         settings: data,
       );
     },
-    _i17.SettingsView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i17.SettingsView(),
+    _i16.SettingsView: (data) {
+      return _i27.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i16.SettingsView(),
         settings: data,
       );
     },
-    _i18.FundView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i18.FundView(),
+    _i17.FundView: (data) {
+      return _i27.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i17.FundView(),
         settings: data,
       );
     },
-    _i19.AddFundsView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i19.AddFundsView(),
+    _i18.AddFundsView: (data) {
+      return _i27.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i18.AddFundsView(),
         settings: data,
       );
     },
-    _i20.WithdrawFundsView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i20.WithdrawFundsView(),
+    _i19.WithdrawFundsView: (data) {
+      return _i27.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i19.WithdrawFundsView(),
         settings: data,
       );
     },
-    _i21.OrderHistoryView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i21.OrderHistoryView(),
+    _i20.OrderHistoryView: (data) {
+      return _i27.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i20.OrderHistoryView(),
         settings: data,
       );
     },
-    _i22.HelpSupportView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i22.HelpSupportView(),
+    _i21.HelpSupportView: (data) {
+      return _i27.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i21.HelpSupportView(),
         settings: data,
       );
     },
-    _i23.AboutView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i23.AboutView(),
+    _i22.AboutView: (data) {
+      return _i27.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i22.AboutView(),
         settings: data,
       );
     },
-    _i24.PriceAlertsView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i24.PriceAlertsView(),
+    _i23.PriceAlertsView: (data) {
+      return _i27.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i23.PriceAlertsView(),
         settings: data,
       );
     },
-    _i25.NewsAlertsView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i25.NewsAlertsView(),
+    _i24.NewsAlertsView: (data) {
+      return _i27.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i24.NewsAlertsView(),
         settings: data,
       );
     },
-    _i26.PrivacyPolicyView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i26.PrivacyPolicyView(),
+    _i25.PrivacyPolicyView: (data) {
+      return _i27.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i25.PrivacyPolicyView(),
         settings: data,
       );
     },
-    _i27.TermsOfServiceView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i27.TermsOfServiceView(),
-        settings: data,
-      );
-    },
-    _i28.AdminVerificationView: (data) {
-      return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i28.AdminVerificationView(),
+    _i26.TermsOfServiceView: (data) {
+      return _i27.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i26.TermsOfServiceView(),
         settings: data,
       );
     },
@@ -434,7 +405,7 @@ class StockDetailsViewArguments {
     required this.symbol,
   });
 
-  final _i29.Key? key;
+  final _i27.Key? key;
 
   final String symbol;
 
@@ -462,7 +433,7 @@ class TradingViewArguments {
     required this.isBuy,
   });
 
-  final _i29.Key? key;
+  final _i27.Key? key;
 
   final String symbol;
 
@@ -491,9 +462,9 @@ class BlogDetailViewArguments {
     required this.blog,
   });
 
-  final _i29.Key? key;
+  final _i27.Key? key;
 
-  final _i30.BlogModel blog;
+  final _i28.BlogModel blog;
 
   @override
   String toString() {
@@ -512,7 +483,7 @@ class BlogDetailViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i31.NavigationService {
+extension NavigatorStateExtension on _i29.NavigationService {
   Future<dynamic> navigateToStartupView([
     int? routerId,
     bool preventDuplicates = true,
@@ -535,20 +506,6 @@ extension NavigatorStateExtension on _i31.NavigationService {
         transition,
   ]) async {
     return navigateTo<dynamic>(Routes.loginView,
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> navigateToKycView([
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  ]) async {
-    return navigateTo<dynamic>(Routes.kycView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -612,7 +569,7 @@ extension NavigatorStateExtension on _i31.NavigationService {
   }
 
   Future<dynamic> navigateToStockDetailsView({
-    _i29.Key? key,
+    _i27.Key? key,
     required String symbol,
     int? routerId,
     bool preventDuplicates = true,
@@ -629,7 +586,7 @@ extension NavigatorStateExtension on _i31.NavigationService {
   }
 
   Future<dynamic> navigateToTradingView({
-    _i29.Key? key,
+    _i27.Key? key,
     required String symbol,
     required bool isBuy,
     int? routerId,
@@ -675,8 +632,8 @@ extension NavigatorStateExtension on _i31.NavigationService {
   }
 
   Future<dynamic> navigateToBlogDetailView({
-    _i29.Key? key,
-    required _i30.BlogModel blog,
+    _i27.Key? key,
+    required _i28.BlogModel blog,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -887,20 +844,6 @@ extension NavigatorStateExtension on _i31.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToAdminVerificationView([
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  ]) async {
-    return navigateTo<dynamic>(Routes.adminVerificationView,
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
   Future<dynamic> replaceWithStartupView([
     int? routerId,
     bool preventDuplicates = true,
@@ -923,20 +866,6 @@ extension NavigatorStateExtension on _i31.NavigationService {
         transition,
   ]) async {
     return replaceWith<dynamic>(Routes.loginView,
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> replaceWithKycView([
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  ]) async {
-    return replaceWith<dynamic>(Routes.kycView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1000,7 +929,7 @@ extension NavigatorStateExtension on _i31.NavigationService {
   }
 
   Future<dynamic> replaceWithStockDetailsView({
-    _i29.Key? key,
+    _i27.Key? key,
     required String symbol,
     int? routerId,
     bool preventDuplicates = true,
@@ -1017,7 +946,7 @@ extension NavigatorStateExtension on _i31.NavigationService {
   }
 
   Future<dynamic> replaceWithTradingView({
-    _i29.Key? key,
+    _i27.Key? key,
     required String symbol,
     required bool isBuy,
     int? routerId,
@@ -1063,8 +992,8 @@ extension NavigatorStateExtension on _i31.NavigationService {
   }
 
   Future<dynamic> replaceWithBlogDetailView({
-    _i29.Key? key,
-    required _i30.BlogModel blog,
+    _i27.Key? key,
+    required _i28.BlogModel blog,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1269,20 +1198,6 @@ extension NavigatorStateExtension on _i31.NavigationService {
         transition,
   ]) async {
     return replaceWith<dynamic>(Routes.termsOfServiceView,
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> replaceWithAdminVerificationView([
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  ]) async {
-    return replaceWith<dynamic>(Routes.adminVerificationView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

@@ -16,11 +16,12 @@ import '../services/alert_service.dart';
 import '../services/theme_service.dart';
 import '../services/connectivity_service.dart';
 import '../services/localization_service.dart';
+import '../services/fund_service.dart';
+import '../services/razorpay_service.dart';
 
 // Views
 import '../ui/views/startup/startup_view.dart';
 import '../ui/views/auth/login_view.dart';
-import '../ui/views/auth/kyc_view.dart';
 import '../ui/views/home/home_view.dart';
 import '../ui/views/market/market_view.dart';
 import '../ui/views/portfolio/portfolio_view.dart';
@@ -44,13 +45,11 @@ import '../ui/views/price_alerts/price_alerts_view.dart';
 import '../ui/views/news_alerts/news_alerts_view.dart';
 import '../ui/views/privacy_policy/privacy_policy_view.dart';
 import '../ui/views/terms_of_service/terms_of_service_view.dart';
-import '../ui/views/admin/admin_verification_view.dart';
 
 @StackedApp(
   routes: [
     MaterialRoute(page: StartupView, initial: true),
     MaterialRoute(page: LoginView),
-    MaterialRoute(page: KycView),
     MaterialRoute(page: HomeView),
     MaterialRoute(page: MarketView),
     MaterialRoute(page: PortfolioView),
@@ -74,7 +73,6 @@ import '../ui/views/admin/admin_verification_view.dart';
     MaterialRoute(page: NewsAlertsView),
     MaterialRoute(page: PrivacyPolicyView),
     MaterialRoute(page: TermsOfServiceView),
-    MaterialRoute(page: AdminVerificationView),
   ],
   dependencies: [
     // Stacked Services
@@ -98,6 +96,8 @@ import '../ui/views/admin/admin_verification_view.dart';
     LazySingleton(classType: ThemeService),
     LazySingleton(classType: ConnectivityService),
     LazySingleton(classType: LocalizationService),
+    LazySingleton(classType: FundService),
+    LazySingleton(classType: RazorpayService),
   ],
   bottomsheets: [
     // Add bottom sheets here

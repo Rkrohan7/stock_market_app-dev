@@ -77,6 +77,9 @@ class FundViewModel extends BaseViewModel {
       _amount = '';
       _isProcessing = false;
       notifyListeners();
+
+      // Wait a moment for the balance to update in real-time, then navigate back
+      await Future.delayed(const Duration(milliseconds: 500));
       _navigationService.back();
     }
   }

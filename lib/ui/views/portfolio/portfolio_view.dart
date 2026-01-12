@@ -168,6 +168,33 @@ class PortfolioView extends StackedView<PortfolioViewModel> {
   }
 
   Widget _buildPortfolioChart(BuildContext context, PortfolioViewModel viewModel) {
+    // If no chart data, show placeholder
+    if (viewModel.chartData.isEmpty) {
+      return Container(
+        height: 200,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Center(
+          child: Text(
+            'No portfolio data yet',
+            style: TextStyle(
+              color: AppColors.textSecondaryLight,
+              fontSize: 14,
+            ),
+          ),
+        ),
+      ).animate().fadeIn(delay: 200.ms);
+    }
+
+    // Calculate min and max Y values for better chart display
+    final yValues = viewModel.chartData.map((spot) => spot.y).toList();
+    final minY = yValues.reduce((a, b) => a < b ? a : b);
+    final maxY = yValues.reduce((a, b) => a > b ? a : b);
+    final padding = (maxY - minY) * 0.1; // 10% padding
+
     return Container(
       height: 200,
       padding: const EdgeInsets.all(16),
@@ -177,9 +204,14 @@ class PortfolioView extends StackedView<PortfolioViewModel> {
       ),
       child: LineChart(
         LineChartData(
+          minY: minY - padding,
+          maxY: maxY + padding,
+          minX: 0,
+          maxX: viewModel.chartData.length.toDouble() - 1,
           gridData: const FlGridData(show: false),
           titlesData: const FlTitlesData(show: false),
           borderData: FlBorderData(show: false),
+          lineTouchData: const LineTouchData(enabled: false),
           lineBarsData: [
             LineChartBarData(
               spots: viewModel.chartData,

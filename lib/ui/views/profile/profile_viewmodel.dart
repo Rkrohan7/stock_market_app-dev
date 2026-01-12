@@ -17,9 +17,6 @@ class ProfileViewModel extends BaseViewModel {
 
   bool get isDarkMode => _themeService.isDarkMode;
 
-  /// Check if current user is admin
-  bool get isAdmin => _authService.isAdmin;
-
   Future<void> initialize() async {
     setBusy(true);
     await _loadUserProfile();
@@ -40,10 +37,6 @@ class ProfileViewModel extends BaseViewModel {
     _navigationService.navigateTo(Routes.settingsView);
   }
 
-  void openKyc() {
-    _navigationService.navigateTo(Routes.kycView);
-  }
-
   void openOrderHistory() {
     _navigationService.navigateTo(Routes.orderHistoryView);
   }
@@ -62,10 +55,6 @@ class ProfileViewModel extends BaseViewModel {
 
   void openAbout() {
     _navigationService.navigateTo(Routes.aboutView);
-  }
-
-  void openAdminPanel() {
-    _navigationService.navigateTo(Routes.adminVerificationView);
   }
 
   Future<void> logout() async {

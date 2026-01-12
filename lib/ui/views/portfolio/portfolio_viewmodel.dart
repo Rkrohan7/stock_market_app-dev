@@ -114,15 +114,25 @@ class PortfolioViewModel extends BaseViewModel {
 
   void _generateChartData() {
     if (_holdings.isEmpty) {
+      // Show demo/placeholder chart for empty portfolio
+      _chartData = List.generate(30, (index) {
+        // Generate a flat line at 50000 (starting balance)
+        return FlSpot(index.toDouble(), 50000.0);
+      });
+      return;
+    }
+
+    // Generate chart data based on portfolio value history
+    // For now, we'll simulate a smooth transition from investment to current value
+    if (totalInvestment == 0) {
       _chartData = [];
       return;
     }
 
-    // Generate chart data based on portfolio value
     _chartData = List.generate(30, (index) {
-      final baseValue = totalInvestment;
-      final variation = (index / 30) * (currentValue - totalInvestment);
-      return FlSpot(index.toDouble(), baseValue + variation);
+      final progress = index / 29; // 0 to 1
+      final value = totalInvestment + (progress * (currentValue - totalInvestment));
+      return FlSpot(index.toDouble(), value);
     });
   }
 
