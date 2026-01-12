@@ -145,26 +145,32 @@ class PortfolioViewModel extends BaseViewModel {
     _navigationService.navigateTo(Routes.searchView);
   }
 
-  void openStockDetails(String symbol) {
-    _navigationService.navigateTo(
+  Future<void> openStockDetails(String symbol) async {
+    await _navigationService.navigateTo(
       Routes.stockDetailsView,
       arguments: StockDetailsViewArguments(symbol: symbol),
     );
+    // Refresh portfolio when returning
+    await refreshData();
   }
 
   // Sell holding
-  void sellHolding(HoldingModel holding) {
-    _navigationService.navigateTo(
+  Future<void> sellHolding(HoldingModel holding) async {
+    await _navigationService.navigateTo(
       Routes.tradingView,
       arguments: TradingViewArguments(symbol: holding.symbol, isBuy: false),
     );
+    // Refresh portfolio after trade
+    await refreshData();
   }
 
   // Buy more of existing holding
-  void buyMore(String symbol) {
-    _navigationService.navigateTo(
+  Future<void> buyMore(String symbol) async {
+    await _navigationService.navigateTo(
       Routes.tradingView,
       arguments: TradingViewArguments(symbol: symbol, isBuy: true),
     );
+    // Refresh portfolio after trade
+    await refreshData();
   }
 }

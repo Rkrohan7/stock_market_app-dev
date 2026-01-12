@@ -38,7 +38,7 @@ class AppColors {
   static const Color cardDark = Color(0xFF16213E);
 
   // Text Colors - Light Theme
-  static const Color textPrimaryLight = Color(0xFF1A1A2E);
+  static const Color textPrimaryLight = Color.fromARGB(255, 0, 0, 0);
   static const Color textSecondaryLight = Color(0xFF6B6B80);
   static const Color textTertiaryLight = Color(0xFF9E9EB0);
 

@@ -155,14 +155,18 @@ class WatchlistViewModel extends BaseViewModel {
     return _watchlistItems.any((item) => item.symbol == symbol);
   }
 
-  void openStockDetails(String symbol) {
-    _navigationService.navigateTo(
+  Future<void> openStockDetails(String symbol) async {
+    await _navigationService.navigateTo(
       Routes.stockDetailsView,
       arguments: StockDetailsViewArguments(symbol: symbol),
     );
+    // Refresh watchlist when returning from stock details
+    await refreshData();
   }
 
-  void openSearch() {
-    _navigationService.navigateTo(Routes.searchView);
+  Future<void> openSearch() async {
+    await _navigationService.navigateTo(Routes.searchView);
+    // Refresh watchlist when returning from search (user might have added stocks)
+    await refreshData();
   }
 }

@@ -148,18 +148,24 @@ class StockDetailsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void openBuyView() {
-    _navigationService.navigateTo(
+  Future<void> openBuyView() async {
+    await _navigationService.navigateTo(
       Routes.tradingView,
       arguments: TradingViewArguments(symbol: symbol, isBuy: true),
     );
+    // Refresh stock details when returning from trading view
+    await _loadStockDetails();
+    await _checkWatchlistStatus();
   }
 
-  void openSellView() {
-    _navigationService.navigateTo(
+  Future<void> openSellView() async {
+    await _navigationService.navigateTo(
       Routes.tradingView,
       arguments: TradingViewArguments(symbol: symbol, isBuy: false),
     );
+    // Refresh stock details when returning from trading view
+    await _loadStockDetails();
+    await _checkWatchlistStatus();
   }
 
   void goBack() {

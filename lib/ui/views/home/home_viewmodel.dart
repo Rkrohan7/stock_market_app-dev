@@ -160,10 +160,12 @@ class HomeViewModel extends BaseViewModel {
     _navigationService.navigateTo(Routes.fundView);
   }
 
-  void openStockDetails(String symbol) {
-    _navigationService.navigateTo(
+  Future<void> openStockDetails(String symbol) async {
+    await _navigationService.navigateTo(
       Routes.stockDetailsView,
       arguments: StockDetailsViewArguments(symbol: symbol),
     );
+    // Refresh home data when returning (user might have bought/sold)
+    await refreshData();
   }
 }
